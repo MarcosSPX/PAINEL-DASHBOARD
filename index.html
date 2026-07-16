@@ -1,544 +1,441 @@
+
 <!DOCTYPE html>
 <html lang="pt-br" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPX Hub | Shopee Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPX Hub | Shopee Portal</title>
+code
+Code
+<!-- Fontes e Ícones -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        /* Identidade Shopee */
+        --shopee-orange: #EE4D2D;
+        --shopee-orange-hover: #d73211;
+        --shopee-bg: #f5f5f5;
+        
+        /* Tema Claro */
+        --bg-body: var(--shopee-bg);
+        --bg-sidebar: #ffffff;
+        --bg-card: #ffffff;
+        --text-main: #222222;
+        --text-muted: #757575;
+        --primary: var(--shopee-orange);
+        --primary-light: #fff5f1;
+        --border: #e8e8e8;
+        --shadow: 0 2px 10px rgba(0,0,0,0.05);
+        --radius: 8px;
+        --sidebar-width: 260px;
+        --transition: all 0.25s ease;
+    }
+
+    [data-theme="dark"] {
+        --bg-body: #121212;
+        --bg-sidebar: #1e1e1e;
+        --bg-card: #252525;
+        --text-main: #f5f5f5;
+        --text-muted: #aaaaaa;
+        --border: #333333;
+        --shadow: 0 4px 20px rgba(0,0,0,0.4);
+        --primary-light: rgba(238, 77, 45, 0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; transition: var(--transition); }
+
+    /* Sidebar */
+    aside {
+        width: var(--sidebar-width);
+        background: var(--bg-sidebar);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+        transition: var(--transition);
+    }
+
+    .sidebar-header { 
+        padding: 20px; 
+        display: flex; 
+        flex-direction: column;
+        align-items: center; 
+        border-bottom: 1px solid var(--border);
+        gap: 10px;
+    }
     
-    <!-- Fontes e Ícones -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    /* Logo Container */
+    .logo-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--primary);
+        text-decoration: none;
+    }
+    .logo-icon {
+        background: var(--primary);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 8px rgba(238, 77, 45, 0.3);
+    }
+    .logo-text { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
+
+    .nav-group { padding: 15px; }
+    .nav-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; padding-left: 10px; }
+    .nav-item { 
+        display: flex; align-items: center; padding: 10px 15px; text-decoration: none; color: var(--text-main);
+        border-radius: 4px; gap: 12px; transition: var(--transition); margin-bottom: 2px; cursor: pointer;
+        font-size: 0.9rem; font-weight: 500;
+    }
+    .nav-item:hover { color: var(--primary); background: var(--primary-light); }
+    .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.2); }
+
+    /* Main Content */
+    main { flex: 1; margin-left: var(--sidebar-width); padding: 25px; transition: var(--transition); }
+
+    /* Header Area */
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 20px; }
+    .search-box { 
+        background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px;
+        padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 600px;
+    }
+    .search-box input { border: none; background: transparent; color: var(--text-main); outline: none; width: 100%; font-size: 0.9rem; }
     
-    <style>
-        :root {
-            /* Identidade Shopee */
-            --shopee-orange: #EE4D2D;
-            --shopee-orange-hover: #d73211;
-            --shopee-bg: #f5f5f5;
-            
-            /* Tema Claro */
-            --bg-body: var(--shopee-bg);
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --text-main: #222222;
-            --text-muted: #757575;
-            --primary: var(--shopee-orange);
-            --primary-light: #fff5f1;
-            --border: #e8e8e8;
-            --shadow: 0 2px 10px rgba(0,0,0,0.05);
-            --radius: 8px;
-            --sidebar-width: 260px;
-            --transition: all 0.25s ease;
-        }
+    .header-tools { display: flex; align-items: center; gap: 20px; }
+    .clock-box { text-align: right; border-right: 2px solid var(--border); padding-right: 20px; }
+    .clock-box #time { font-weight: 700; font-size: 1.1rem; color: var(--primary); display: block; }
+    .clock-box #date { font-size: 0.75rem; color: var(--text-muted); }
 
-        [data-theme="dark"] {
-            --bg-body: #121212;
-            --bg-sidebar: #1e1e1e;
-            --bg-card: #252525;
-            --text-main: #f5f5f5;
-            --text-muted: #aaaaaa;
-            --border: #333333;
-            --shadow: 0 4px 20px rgba(0,0,0,0.4);
-            --primary-light: rgba(238, 77, 45, 0.1);
-        }
+    /* Stats Section */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+    .stat-card { 
+        background: var(--bg-card); padding: 20px; border-radius: 4px; border-bottom: 3px solid var(--border);
+        display: flex; flex-direction: column; box-shadow: var(--shadow); transition: var(--transition);
+    }
+    .stat-card:hover { border-bottom-color: var(--primary); transform: translateY(-2px); }
+    .stat-card span { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 5px; }
+    .stat-card h3 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; transition: var(--transition); }
+    /* Dashboard Grid */
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .dash-card { 
+        background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);
+        padding: 20px; position: relative; transition: var(--transition);
+        display: flex; flex-direction: column; gap: 15px;
+    }
+    .dash-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary); }
+    
+    .card-top { display: flex; justify-content: space-between; align-items: center; }
+    .card-icon { 
+        width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center; 
+        justify-content: center; font-size: 1.5rem; background: var(--primary-light); color: var(--primary);
+    }
+    
+    .card-info h4 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 5px; }
+    .card-info p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; height: 40px; overflow: hidden; }
 
-        /* Sidebar */
-        aside {
-            width: var(--sidebar-width);
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-            transition: var(--transition);
-        }
+    /* Buttons */
+    .btn { 
+        padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; 
+        font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--shopee-orange-hover); }
+    .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+    .btn-outline:hover { background: var(--primary-light); }
+    .btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); width: 36px; height: 36px; justify-content: center; }
+    .btn-fav.active { color: var(--primary); }
 
-        .sidebar-header { 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            border-bottom: 1px solid var(--border);
-            gap: 10px;
-        }
-        
-        /* Logo Container */
-        .logo-container {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .logo-icon {
-            background: var(--primary);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 8px rgba(238, 77, 45, 0.3);
-        }
-        .logo-text { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
+    /* Modal */
+    .modal { 
+        position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+        display: none; align-items: center; justify-content: center; z-index: 1000;
+    }
+    .modal.active { display: flex; }
+    .modal-content { 
+        background: var(--bg-card); width: 95%; max-width: 600px; padding: 30px; 
+        border-radius: 4px; box-shadow: var(--shadow); position: relative;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+    .input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+    input, textarea, select { 
+        padding: 10px; border-radius: 4px; border: 1px solid var(--border); 
+        background: var(--bg-body); color: var(--text-main); outline: none;
+    }
+    input:focus { border-color: var(--primary); }
 
-        .nav-group { padding: 15px; }
-        .nav-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; padding-left: 10px; }
-        .nav-item { 
-            display: flex; align-items: center; padding: 10px 15px; text-decoration: none; color: var(--text-main);
-            border-radius: 4px; gap: 12px; transition: var(--transition); margin-bottom: 2px; cursor: pointer;
-            font-size: 0.9rem; font-weight: 500;
-        }
-        .nav-item:hover { color: var(--primary); background: var(--primary-light); }
-        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.2); }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 30px; border-radius: 4px; display: none; z-index: 2000; box-shadow: var(--shadow); }
 
-        /* Main Content */
-        main { flex: 1; margin-left: var(--sidebar-width); padding: 25px; transition: var(--transition); }
-
-        /* Header Area */
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 20px; }
-        .search-box { 
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px;
-            padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 600px;
-        }
-        .search-box input { border: none; background: transparent; color: var(--text-main); outline: none; width: 100%; font-size: 0.9rem; }
-        
-        .header-tools { display: flex; align-items: center; gap: 20px; }
-        .clock-box { text-align: right; border-right: 2px solid var(--border); padding-right: 20px; }
-        .clock-box #time { font-weight: 700; font-size: 1.1rem; color: var(--primary); display: block; }
-        .clock-box #date { font-size: 0.75rem; color: var(--text-muted); }
-
-        /* Stats Section */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { 
-            background: var(--bg-card); padding: 20px; border-radius: 4px; border-bottom: 3px solid var(--border);
-            display: flex; flex-direction: column; box-shadow: var(--shadow); transition: var(--transition);
-        }
-        .stat-card:hover { border-bottom-color: var(--primary); transform: translateY(-2px); }
-        .stat-card span { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 5px; }
-        .stat-card h3 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); }
-
-        /* Dashboard Grid */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .dash-card { 
-            background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);
-            padding: 20px; position: relative; transition: var(--transition);
-            display: flex; flex-direction: column; gap: 15px;
-        }
-        .dash-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary); }
-        
-        .card-top { display: flex; justify-content: space-between; align-items: center; }
-        .card-icon { 
-            width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center; 
-            justify-content: center; font-size: 1.5rem; background: var(--primary-light); color: var(--primary);
-        }
-        
-        .card-info h4 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 5px; }
-        .card-info p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; height: 40px; overflow: hidden; }
-
-        /* Buttons */
-        .btn { 
-            padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; 
-            font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
-        }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--shopee-orange-hover); }
-        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-        .btn-outline:hover { background: var(--primary-light); }
-        .btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); width: 36px; height: 36px; justify-content: center; }
-        .btn-fav.active { color: var(--primary); }
-
-        /* Modal */
-        .modal { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
-            display: none; align-items: center; justify-content: center; z-index: 1000;
-        }
-        .modal.active { display: flex; }
-        .modal-content { 
-            background: var(--bg-card); width: 95%; max-width: 600px; padding: 30px; 
-            border-radius: 4px; box-shadow: var(--shadow); position: relative;
-        }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-        label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
-        input, textarea, select { 
-            padding: 10px; border-radius: 4px; border: 1px solid var(--border); 
-            background: var(--bg-body); color: var(--text-main); outline: none;
-        }
-        input:focus { border-color: var(--primary); }
-
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 30px; border-radius: 4px; display: none; z-index: 2000; box-shadow: var(--shadow); }
-
-        /* Responsividade */
-        @media (max-width: 1024px) {
-            aside { width: 70px; }
-            aside .logo-text, aside .nav-item span, aside .nav-title { display: none; }
-            main { margin-left: 70px; }
-            .sidebar-header { padding: 15px 5px; }
-        }
-    </style>
+    /* Responsividade */
+    @media (max-width: 1024px) {
+        aside { width: 70px; }
+        aside .logo-text, aside .nav-item span, aside .nav-title { display: none; }
+        main { margin-left: 70px; }
+        .sidebar-header { padding: 15px 5px; }
+    }
+</style>
 </head>
 <body>
-
-    <aside id="sidebar">
-        <div class="sidebar-header">
-            <a href="#" class="logo-container">
-                <div class="logo-icon"><i class="fas fa-shopping-bag"></i></div>
-                <div class="logo-text">Shopee<span style="color:var(--text-main)">Hub</span></div>
-            </a>
-        </div>
-        
-        <nav class="nav-group">
-            <p class="nav-title">Navegação</p>
-            <div class="nav-item active" data-filter="all"><i class="fas fa-home"></i> <span>Início</span></div>
-            <div class="nav-item" data-filter="favoritos"><i class="fas fa-heart"></i> <span>Favoritos</span></div>
-            <div class="nav-item" data-filter="recentes"><i class="fas fa-clock"></i> <span>Recentes</span></div>
-        </nav>
-
-        <nav class="nav-group">
-            <p class="nav-title">Departamentos</p>
-            <div id="sector-list">
-                <!-- Preenchido via JS -->
-            </div>
-        </nav>
-    </aside>
-
-    <main>
-        <header>
-            <div class="search-box">
-                <i class="fas fa-search" style="color: var(--text-muted)"></i>
-                <input type="text" id="searchInput" placeholder="Pesquisar por nome, responsável ou setor...">
-            </div>
-            <div class="header-tools">
-                <div class="clock-box">
-                    <span id="time">00:00:00</span>
-                    <span id="date">--/--/----</span>
-                </div>
-                <button class="btn btn-icon" id="themeToggle" title="Alternar Tema"><i class="fas fa-moon"></i></button>
-                <button class="btn btn-primary" id="btnNew"><i class="fas fa-plus"></i> Novo Dashboard</button>
-            </div>
-        </header>
-
-        <section class="stats-grid">
-            <div class="stat-card"><span>Total de Ativos</span><h3 id="stat-total">0</h3></div>
-            <div class="stat-card"><span>Meus Favoritos</span><h3 id="stat-favs">0</h3></div>
-            <div class="stat-card"><span>Acessos Totais</span><h3 id="stat-views">0</h3></div>
-            <div class="stat-card"><span>Categorias</span><h3 id="stat-sectors">0</h3></div>
-        </section>
-
-        <div class="dashboard-grid" id="grid">
-            <!-- Cards gerados dinamicamente -->
-        </div>
-    </main>
-
-    <!-- Modal Form -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle" style="margin-bottom: 20px; color: var(--primary)">Cadastrar Dashboard</h2>
-            <form id="dashForm">
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Nome do Dashboard</label>
-                        <input type="text" id="name" required placeholder="Ex: Insira o nome do projeto...">
-                    </div>
-                    <div class="input-group">
-                        <label>Setor</label>
-                        <select id="sector" required>
-                            <option value="Operação">Operação</option>
-                            <option value="Gestão">Gestão</option>
-                            <option value="Comercial">Comercial</option>
-                            <option value="Logística">Logística</option>
-                            <option value="Marketing">Marketing</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Descrição Curta</label>
-                    <textarea id="desc" rows="2" placeholder="Descreva brevemente o uso deste link..."></textarea>
-                </div>
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Tipo de Ferramenta</label>
-                        <select id="type">
-                            <option value="Power BI">Power BI</option>
-                            <option value="Sheets">Google Sheets</option>
-                            <option value="HTML">Sistema HTML</option>
-                            <option value="Forms">Google Forms</option>
-                            <option value="Data Studio">Data Studio</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Responsável</label>
-                        <input type="text" id="owner" placeholder="Nome do responsável">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>URL / Link de Acesso</label>
-                    <input type="text" id="url" required placeholder="https://shopee.com/dashboard">
-                </div>
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar no Portal</button>
-                </div>
-            </form>
-        </div>
+code
+Code
+<aside id="sidebar">
+    <div class="sidebar-header">
+        <a href="#" class="logo-container">
+            <div class="logo-icon"><i class="fas fa-shopping-bag"></i></div>
+            <div class="logo-text">Shopee<span style="color:var(--text-main)">Hub</span></div>
+        </a>
     </div>
+    
+    <nav class="nav-group">
+        <p class="nav-title">Navegação</p>
+        <div class="nav-item active" data-filter="all"><i class="fas fa-home"></i> <span>Início</span></div>
+        <div class="nav-item" data-filter="favoritos"><i class="fas fa-heart"></i> <span>Favoritos</span></div>
+        <div class="nav-item" data-filter="recentes"><i class="fas fa-clock"></i> <span>Recentes</span></div>
+    </nav>
 
-    <div class="toast" id="toast">Sucesso!</div>
+    <nav class="nav-group">
+        <p class="nav-title">Departamentos</p>
+        <div id="sector-list">
+            <!-- Preenchido via JS -->
+        </div>
+    </nav>
+</aside>
 
-    <!-- Scripts de Compartilhamento Global (Firebase) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<main>
+    <header>
+        <div class="search-box">
+            <i class="fas fa-search" style="color: var(--text-muted)"></i>
+            <input type="text" id="searchInput" placeholder="Pesquisar por nome, responsável ou setor...">
+        </div>
+        <div class="header-tools">
+            <div class="clock-box">
+                <span id="time">00:00:00</span>
+                <span id="date">--/--/----</span>
+            </div>
+            <button class="btn btn-icon" id="themeToggle" title="Alternar Tema"><i class="fas fa-moon"></i></button>
+            <button class="btn btn-primary" id="btnNew"><i class="fas fa-plus"></i> Novo Dashboard</button>
+        </div>
+    </header>
 
-    <script>
-        // CONFIGURAÇÃO FIREBASE
-        const firebaseConfig = {
-            databaseURL: "https://shopeehub-default-rtdb.firebaseio.com/" 
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database().ref('global_dashboards');
+    <section class="stats-grid">
+        <div class="stat-card"><span>Total de Ativos</span><h3 id="stat-total">0</h3></div>
+        <div class="stat-card"><span>Meus Favoritos</span><h3 id="stat-favs">0</h3></div>
+        <div class="stat-card"><span>Acessos Totais</span><h3 id="stat-views">0</h3></div>
+        <div class="stat-card"><span>Categorias</span><h3 id="stat-sectors">0</h3></div>
+    </section>
 
-        // IDENTIFICAÇÃO DO USUÁRIO
-        if(!localStorage.getItem('shopee_uid')) {
-            localStorage.setItem('shopee_uid', 'user_' + Math.random().toString(36).substr(2, 9));
+    <div class="dashboard-grid" id="grid">
+        <!-- Cards gerados dinamicamente -->
+    </div>
+</main>
+
+<!-- Modal Form -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h2 id="modalTitle" style="margin-bottom: 20px; color: var(--primary)">Cadastrar Dashboard</h2>
+        <form id="dashForm">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Nome do Dashboard</label>
+                    <input type="text" id="name" required placeholder="Ex: Insira o nome do projeto...">
+                </div>
+                <div class="input-group">
+                    <label>Setor</label>
+                    <select id="sector" required>
+                        <option value="Operação">Operação</option>
+                        <option value="Gestão">Gestão</option>
+                        <option value="Comercial">Comercial</option>
+                        <option value="Logística">Logística</option>
+                        <option value="Marketing">Marketing</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Descrição Curta</label>
+                <textarea id="desc" rows="2" placeholder="Descreva brevemente o uso deste link..."></textarea>
+            </div>
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Tipo de Ferramenta</label>
+                    <select id="type">
+                        <option value="Power BI">Power BI</option>
+                        <option value="Sheets">Google Sheets</option>
+                        <option value="HTML">Sistema HTML</option>
+                        <option value="Forms">Google Forms</option>
+                        <option value="Data Studio">Data Studio</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Responsável</label>
+                    <input type="text" id="owner" placeholder="Nome do responsável">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>URL / Link de Acesso</label>
+                <input type="text" id="url" required placeholder="https://shopee.com/dashboard">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
+                <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" id="btnSave">Salvar no Portal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="toast" id="toast">Sucesso!</div>
+
+<!-- Scripts de Compartilhamento Global (Firebase) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<script>
+    // CONFIGURAÇÃO FIREBASE
+    const firebaseConfig = {
+        apiKey: "AIzaSyAs-Shopee-Hub-Config",
+        authDomain: "shopeehub-default.firebaseapp.com",
+        databaseURL: "https://shopeehub-default-rtdb.firebaseio.com/",
+        projectId: "shopeehub-default",
+        storageBucket: "shopeehub-default.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:abcdef123456"
+    };
+
+    // Inicialização com Tratamento de Erro
+    try {
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
         }
-        const currentUid = localStorage.getItem('shopee_uid');
-        
-        // Simulação de Admin (Pode ser alterado para lógica de login real futuramente)
-        const isAdmin = localStorage.getItem('shopee_admin') === 'true';
+    } catch (e) {
+        console.error("Erro ao inicializar Firebase: ", e);
+    }
 
-        // ESTADO GLOBAL
-        let dashboards = [];
-        let state = { filter: 'all', search: '' };
-        let recentIds = JSON.parse(localStorage.getItem('shopee_recent')) || [];
-        let myFavs = JSON.parse(localStorage.getItem('shopee_favs')) || [];
+    const db = firebase.database().ref('global_dashboards');
 
-        // MAPEAMENTO DE ÍCONES POR TIPO
-        const typeIcons = {
-            'Power BI': 'fas fa-chart-pie',
-            'Sheets': 'fas fa-file-excel',
-            'HTML': 'fas fa-code',
-            'Forms': 'fas fa-list-alt',
-            'Data Studio': 'fas fa-chart-line'
-        };
+    // IDENTIFICAÇÃO DO USUÁRIO
+    if(!localStorage.getItem('shopee_uid')) {
+        localStorage.setItem('shopee_uid', 'user_' + Math.random().toString(36).substr(2, 9));
+    }
+    const currentUid = localStorage.getItem('shopee_uid');
+    const isAdmin = localStorage.getItem('shopee_admin') === 'true';
 
-        // INICIALIZAÇÃO SINCRONIZADA
-        function init() {
-            // Escuta em tempo real: qualquer mudança no Firebase reflete para todos os usuários
-            db.on('value', (snapshot) => {
-                const data = snapshot.val();
-                dashboards = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
-                renderSectors();
-                renderCards();
-                updateStats();
-            });
-            startClock();
-            setupTheme();
-        }
+    // ESTADO GLOBAL
+    let dashboards = [];
+    let state = { filter: 'all', search: '' };
+    let recentIds = JSON.parse(localStorage.getItem('shopee_recent')) || [];
+    let myFavs = JSON.parse(localStorage.getItem('shopee_favs')) || [];
 
-        // RENDERIZAÇÃO DE CARDS (Mantendo Layout Original)
-        function renderCards() {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
+    // MAPEAMENTO DE ÍCONES POR TIPO
+    const typeIcons = {
+        'Power BI': 'fas fa-chart-pie',
+        'Sheets': 'fas fa-file-excel',
+        'HTML': 'fas fa-code',
+        'Forms': 'fas fa-list-alt',
+        'Data Studio': 'fas fa-chart-line'
+    };
 
-            const filtered = dashboards.filter(d => {
-                const searchLower = state.search.toLowerCase();
-                const matchesSearch = 
-                    d.name.toLowerCase().includes(searchLower) || 
-                    d.sector.toLowerCase().includes(searchLower) ||
-                    d.owner.toLowerCase().includes(searchLower) ||
-                    d.type.toLowerCase().includes(searchLower) ||
-                    (d.desc && d.desc.toLowerCase().includes(searchLower));
-                
-                let matchesNav = true;
-                const isFav = myFavs.includes(d.id);
-
-                if (state.filter === 'favoritos') matchesNav = isFav;
-                else if (state.filter === 'recentes') matchesNav = recentIds.includes(d.id);
-                else if (state.filter !== 'all') matchesNav = d.sector === state.filter;
-
-                return matchesSearch && matchesNav;
-            });
-
-            filtered.forEach(dash => {
-                const isFav = myFavs.includes(dash.id);
-                const isAuthor = dash.authorId === currentUid;
-                const iconClass = typeIcons[dash.type] || 'fas fa-external-link-alt';
-                
-                const card = document.createElement('div');
-                card.className = 'dash-card';
-                card.innerHTML = `
-                    <div class="card-top">
-                        <div class="card-icon" title="${dash.type}"><i class="${iconClass}"></i></div>
-                        <button class="btn-icon btn-fav ${isFav ? 'active' : ''}" onclick="toggleFav('${dash.id}')">
-                            <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
-                        </button>
-                    </div>
-                    <div class="card-info">
-                        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                             <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">${dash.sector}</span>
-                             <span style="font-size: 0.6rem; color: var(--text-muted); opacity: 0.7;">${dash.type}</span>
-                        </div>
-                        <h4>${dash.name}</h4>
-                        <p>${dash.desc || 'Sem descrição disponível.'}</p>
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-primary" onclick="openDash('${dash.id}', '${dash.url}')" style="flex: 1; justify-content: center;">
-                            Acessar Dashboard
-                        </button>
-                        ${(isAuthor || isAdmin) ? `<button class="btn btn-icon" onclick="deleteDash('${dash.id}')" title="Excluir"><i class="fas fa-trash"></i></button>` : ''}
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px;">
-                        <span><i class="fas fa-user-circle"></i> ${dash.owner}</span>
-                        <span><i class="fas fa-eye"></i> ${dash.views || 0}</span>
-                    </div>
-                    <div style="font-size: 0.6rem; color: var(--text-muted); margin-top: -10px; text-align: right; opacity: 0.6;">
-                        ${new Date(dash.createdAt).toLocaleDateString('pt-br')}
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // RENDERIZAÇÃO DE SETORES DINÂMICOS
-        function renderSectors() {
-            const sectors = [...new Set(dashboards.map(d => d.sector))];
-            const container = document.getElementById('sector-list');
-            container.innerHTML = sectors.map(s => `
-                <div class="nav-item ${state.filter === s ? 'active' : ''}" data-filter="${s}"><i class="fas fa-folder"></i> <span>${s}</span></div>
-            `).join('');
-
-            document.querySelectorAll('#sector-list .nav-item').forEach(item => {
-                item.onclick = () => {
-                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                    item.classList.add('active');
-                    state.filter = item.dataset.filter;
-                    renderCards();
-                };
-            });
-        }
-
-        // AÇÃO DE ABRIR DASHBOARD (Global views + Local Recents)
-        function openDash(id, url) {
-            // Histórico individual (Local)
-            recentIds = recentIds.filter(rid => rid !== id);
-            recentIds.unshift(id);
-            if (recentIds.length > 8) recentIds.pop();
-            localStorage.setItem('shopee_recent', JSON.stringify(recentIds));
-            
-            // Incremento de acessos global (Firebase)
-            const dash = dashboards.find(d => d.id === id);
-            db.child(id).update({ 
-                views: (dash.views || 0) + 1,
-                lastAccess: new Date().toISOString()
-            });
-            
-            showToast("Abrindo portal de dados...");
-            setTimeout(() => window.open(url, '_blank'), 400);
-        }
-
-        // FAVORITOS (Local)
-        function toggleFav(id) {
-            const index = myFavs.indexOf(id);
-            if(index > -1) myFavs.splice(index, 1);
-            else myFavs.push(id);
-            
-            localStorage.setItem('shopee_favs', JSON.stringify(myFavs));
+    // INICIALIZAÇÃO SINCRONIZADA
+    function init() {
+        // Escuta em tempo real
+        db.on('value', (snapshot) => {
+            const data = snapshot.val();
+            dashboards = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
+            renderSectors();
             renderCards();
             updateStats();
-        }
+        }, (error) => {
+            console.error("Erro na leitura do Database: ", error);
+        });
 
-        // EXCLUSÃO (Segurança: Autor ou Admin)
-        function deleteDash(id) {
-            const dash = dashboards.find(d => d.id === id);
-            if(!dash) return;
+        startClock();
+        setupTheme();
+    }
 
-            if(dash.authorId === currentUid || isAdmin) {
-                if(confirm("Deseja remover este projeto permanentemente da biblioteca global?")) {
-                    db.child(id).remove();
-                    showToast("Removido com sucesso!");
-                }
-            } else {
-                alert("Apenas o autor ou administradores podem excluir este projeto.");
-            }
-        }
+    // RENDERIZAÇÃO DE CARDS
+    function renderCards() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
 
-        // SALVAR NO PORTAL (Firebase Realtime)
-        document.getElementById('dashForm').onsubmit = (e) => {
-            e.preventDefault();
+        const filtered = dashboards.filter(d => {
+            const searchLower = state.search.toLowerCase();
+            const matchesSearch = 
+                d.name.toLowerCase().includes(searchLower) || 
+                d.sector.toLowerCase().includes(searchLower) ||
+                d.owner.toLowerCase().includes(searchLower) ||
+                d.type.toLowerCase().includes(searchLower) ||
+                (d.desc && d.desc.toLowerCase().includes(searchLower));
             
-            const newDash = {
-                name: document.getElementById('name').value,
-                sector: document.getElementById('sector').value,
-                desc: document.getElementById('desc').value,
-                type: document.getElementById('type').value,
-                owner: document.getElementById('owner').value,
-                url: document.getElementById('url').value,
-                authorId: currentUid,
-                views: 0,
-                createdAt: new Date().toISOString()
-            };
+            let matchesNav = true;
+            const isFav = myFavs.includes(d.id);
+
+            if (state.filter === 'favoritos') matchesNav = isFav;
+            else if (state.filter === 'recentes') matchesNav = recentIds.includes(d.id);
+            else if (state.filter !== 'all') matchesNav = d.sector === state.filter;
+
+            return matchesSearch && matchesNav;
+        });
+
+        filtered.forEach(dash => {
+            const isFav = myFavs.includes(dash.id);
+            const isAuthor = dash.authorId === currentUid;
+            const iconClass = typeIcons[dash.type] || 'fas fa-external-link-alt';
             
-            // Salva no banco compartilhado
-            db.push(newDash).then(() => {
-                closeModal();
-                document.getElementById('dashForm').reset();
-                showToast("Publicado na Biblioteca Global!");
-            }).catch(err => {
-                alert("Erro ao salvar: " + err.message);
-            });
-        };
+            const card = document.createElement('div');
+            card.className = 'dash-card';
+            card.innerHTML = `
+                <div class="card-top">
+                    <div class="card-icon" title="${dash.type}"><i class="${iconClass}"></i></div>
+                    <button class="btn-icon btn-fav ${isFav ? 'active' : ''}" onclick="toggleFav('${dash.id}')">
+                        <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                    </button>
+                </div>
+                <div class="card-info">
+                    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                         <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">${dash.sector}</span>
+                         <span style="font-size: 0.6rem; color: var(--text-muted); opacity: 0.7;">${dash.type}</span>
+                    </div>
+                    <h4>${dash.name}</h4>
+                    <p>${dash.desc || 'Sem descrição disponível.'}</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-primary" onclick="openDash('${dash.id}', '${dash.url}')" style="flex: 1; justify-content: center;">
+                        Acessar Dashboard
+                    </button>
+                    ${(isAuthor || isAdmin) ? `<button class="btn btn-icon" onclick="deleteDash('${dash.id}')" title="Excluir"><i class="fas fa-trash"></i></button>` : ''}
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px;">
+                    <span><i class="fas fa-user-circle"></i> ${dash.owner}</span>
+                    <span><i class="fas fa-eye"></i> ${dash.views || 0}</span>
+                </div>
+                <div style="font-size: 0.6rem; color: var(--text-muted); margin-top: -10px; text-align: right; opacity: 0.6;">
+                    ${new Date(dash.createdAt).toLocaleDateString('pt-br')}
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
 
-        // ESTATÍSTICAS TOTAIS
-        function updateStats() {
-            document.getElementById('stat-total').innerText = dashboards.length;
-            document.getElementById('stat-favs').innerText = myFavs.filter(id => dashboards.some(d => d.id === id)).length;
-            document.getElementById('stat-views').innerText = dashboards.reduce((acc, d) => acc + (d.views || 0), 0);
-            document.getElementById('stat-sectors').innerText = [...new Set(dashboards.map(d => d.sector))].length;
-        }
+    // SETORES DINÂMICOS
+    function renderSectors() {
+        const sectors = [...new Set(dashboards.map(d => d.sector))];
+        const container = document.getElementById('sector-list');
+        container.innerHTML = sectors.map(s => `
+            <div class="nav-item ${state.filter === s ? 'active' : ''}" data-filter="${s}"><i class="fas fa-folder"></i> <span>${s}</span></div>
+        `).join('');
 
-        // RELÓGIO
-        function startClock() {
-            const update = () => {
-                const now = new Date();
-                document.getElementById('time').innerText = now.toLocaleTimeString('pt-br');
-                document.getElementById('date').innerText = now.toLocaleDateString('pt-br', { day: '2-digit', month: 'long', year: 'numeric' });
-            };
-            setInterval(update, 1000);
-            update();
-        }
-
-        // UI HELPERS
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg; t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 3000);
-        }
-
-        function setupTheme() {
-            const btn = document.getElementById('themeToggle');
-            btn.onclick = () => {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'light' ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', next);
-                btn.innerHTML = next === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-            };
-        }
-
-        document.getElementById('btnNew').onclick = () => document.getElementById('modal').classList.add('active');
-        function closeModal() { document.getElementById('modal').classList.remove('active'); }
-        document.getElementById('searchInput').oninput = (e) => { state.search = e.target.value; renderCards(); };
-
-        // FILTROS DE NAVEGAÇÃO FIXOS
-        document.querySelectorAll('.nav-group:first-of-type .nav-item').forEach(item => {
+        document.querySelectorAll('#sector-list .nav-item').forEach(item => {
             item.onclick = () => {
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                 item.classList.add('active');
@@ -546,9 +443,136 @@
                 renderCards();
             };
         });
+    }
 
-        // INICIAR PORTAL
-        init();
-    </script>
+    // AÇÃO ACESSAR
+    function openDash(id, url) {
+        recentIds = recentIds.filter(rid => rid !== id);
+        recentIds.unshift(id);
+        if (recentIds.length > 8) recentIds.pop();
+        localStorage.setItem('shopee_recent', JSON.stringify(recentIds));
+        
+        const dash = dashboards.find(d => d.id === id);
+        db.child(id).update({ 
+            views: (dash.views || 0) + 1,
+            lastAccess: new Date().toISOString()
+        }).catch(e => console.error("Erro ao atualizar contador: ", e));
+        
+        showToast("Abrindo portal...");
+        setTimeout(() => window.open(url, '_blank'), 300);
+    }
+
+    // FAVORITOS
+    function toggleFav(id) {
+        const index = myFavs.indexOf(id);
+        if(index > -1) myFavs.splice(index, 1);
+        else myFavs.push(id);
+        localStorage.setItem('shopee_favs', JSON.stringify(myFavs));
+        renderCards();
+        updateStats();
+    }
+
+    // EXCLUIR
+    function deleteDash(id) {
+        if(confirm("Deseja remover este projeto permanentemente?")) {
+            db.child(id).remove()
+                .then(() => showToast("Removido com sucesso!"))
+                .catch(e => {
+                    console.error("Erro ao excluir: ", e);
+                    alert("Erro ao excluir do banco.");
+                });
+        }
+    }
+
+    // SALVAR NO PORTAL (CORREÇÃO DO BUG)
+    document.getElementById('dashForm').onsubmit = (e) => {
+        e.preventDefault();
+        
+        const nameField = document.getElementById('name');
+        const urlField = document.getElementById('url');
+
+        // Validação simples
+        if(!nameField.value.trim() || !urlField.value.trim()) {
+            alert("Nome e URL são obrigatórios.");
+            return;
+        }
+
+        const newDash = {
+            name: nameField.value.trim(),
+            sector: document.getElementById('sector').value,
+            desc: document.getElementById('desc').value.trim(),
+            type: document.getElementById('type').value,
+            owner: document.getElementById('owner').value.trim() || "Não informado",
+            url: urlField.value.trim(),
+            authorId: currentUid,
+            views: 0,
+            createdAt: new Date().toISOString()
+        };
+        
+        // Gravação no Firebase
+        db.push(newDash)
+            .then(() => {
+                closeModal();
+                document.getElementById('dashForm').reset();
+                showToast("Dashboard salvo com sucesso!");
+            })
+            .catch(err => {
+                console.error("Erro detalhado ao salvar no Firebase: ", err);
+                alert("Erro ao salvar no banco. Verifique o console.");
+            });
+    };
+
+    // ESTATÍSTICAS
+    function updateStats() {
+        document.getElementById('stat-total').innerText = dashboards.length;
+        document.getElementById('stat-favs').innerText = myFavs.filter(id => dashboards.some(d => d.id === id)).length;
+        document.getElementById('stat-views').innerText = dashboards.reduce((acc, d) => acc + (d.views || 0), 0);
+        document.getElementById('stat-sectors').innerText = [...new Set(dashboards.map(d => d.sector))].length;
+    }
+
+    // RELÓGIO
+    function startClock() {
+        const update = () => {
+            const now = new Date();
+            document.getElementById('time').innerText = now.toLocaleTimeString('pt-br');
+            document.getElementById('date').innerText = now.toLocaleDateString('pt-br', { day: '2-digit', month: 'long', year: 'numeric' });
+        };
+        setInterval(update, 1000);
+        update();
+    }
+
+    // UI
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg; t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    function setupTheme() {
+        const btn = document.getElementById('themeToggle');
+        btn.onclick = () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            btn.innerHTML = next === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        };
+    }
+
+    document.getElementById('btnNew').onclick = () => document.getElementById('modal').classList.add('active');
+    function closeModal() { document.getElementById('modal').classList.remove('active'); }
+    document.getElementById('searchInput').oninput = (e) => { state.search = e.target.value; renderCards(); };
+
+    // FILTROS
+    document.querySelectorAll('.nav-group:first-of-type .nav-item').forEach(item => {
+        item.onclick = () => {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            state.filter = item.dataset.filter;
+            renderCards();
+        };
+    });
+
+    init();
+</script>
 </body>
 </html>
