@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Hub | Inteligência Corporativa</title>
     <style>
-        /* VARIÁVEIS DE CORES E ESTILO */
+        /* VARIÁVEIS E TEMAS */
         :root {
             --bg-body: #0F172A;
             --bg-card: #1E293B;
@@ -18,34 +18,18 @@
             --status-maintenence: #EAB308;
             --status-offline: #EF4444;
             --border: #334155;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* RESET E GERAL */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
+        /* GERAL */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* ANIMAÇÕES */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
+            display: flex;
+            flex-direction: column;
         }
 
         /* CABEÇALHO */
@@ -63,380 +47,114 @@
             justify-content: space-between;
         }
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+        .logo-section { display: flex; align-items: center; gap: 0.75rem; }
+        .logo-section svg { fill: var(--accent); width: 32px; height: 32px; }
+        .logo-section h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px; }
 
-        .logo-section svg {
-            fill: var(--accent);
-            width: 32px;
-            height: 32px;
-        }
-
-        .logo-section h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        /* CONTROLES (BUSCA E FILTROS) */
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            flex-grow: 1;
-            justify-content: flex-end;
-        }
-
-        .search-container {
-            position: relative;
-            max-width: 400px;
-            width: 100%;
-        }
-
+        /* CONTROLES */
+        .controls { display: flex; flex-wrap: wrap; gap: 1rem; flex-grow: 1; justify-content: flex-end; }
+        
+        .search-container { position: relative; max-width: 350px; width: 100%; }
         .search-container input {
-            width: 100%;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.6rem 1rem 0.6rem 2.5rem;
-            color: white;
-            outline: none;
-            transition: var(--transition);
+            width: 100%; background: var(--bg-input); border: 1px solid var(--border);
+            border-radius: 8px; padding: 0.6rem 1rem 0.6rem 2.5rem; color: white; outline: none;
         }
-
-        .search-container input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(238, 77, 45, 0.2);
-        }
-
         .search-container svg {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            fill: var(--text-muted);
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 0.5rem;
+            position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);
+            width: 18px; height: 18px; fill: var(--text-muted);
         }
 
         select {
-            background-color: var(--bg-input);
-            color: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            outline: none;
-            cursor: pointer;
+            background: var(--bg-input); color: white; border: 1px solid var(--border);
+            border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer; outline: none;
         }
 
-        .btn-new {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
+        .btn-primary {
+            background: var(--accent); color: white; border: none; padding: 0.6rem 1.2rem;
+            border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center;
+            gap: 0.5rem; transition: var(--transition);
         }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .btn-new:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        /* GRID PRINCIPAL */
-        main {
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
+        /* GRID */
+        main { padding: 2rem; max-width: 1400px; margin: 0 auto; width: 100%; flex-grow: 1; }
+        
         .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem; animation: fadeIn 0.5s ease;
         }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* CARDS */
         .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.4s ease forwards;
-            position: relative;
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+            overflow: hidden; display: flex; flex-direction: column; transition: var(--transition);
         }
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: var(--shadow);
+        .card-img {
+            height: 150px; background: #0F172A; background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center;
         }
+        .card-img svg { width: 48px; height: 48px; fill: var(--bg-input); }
 
-        .card-image {
-            height: 160px;
-            width: 100%;
-            background-color: #0F172A;
-            background-position: center;
-            background-size: cover;
-            position: relative;
-        }
+        .card-body { padding: 1.25rem; flex-grow: 1; }
+        .area-label { font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .card-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem; }
 
-        .card-content {
-            padding: 1.25rem;
-            flex-grow: 1;
-        }
+        .card-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .status-pill { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 600; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
 
-        .area-badge {
-            font-size: 0.75rem;
-            color: var(--accent);
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-description {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-footer {
-            border-top: 1px solid var(--border);
-            padding: 1rem 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .status-pill {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .update-info {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-
-        .card-actions {
-            padding: 0 1.25rem 1.25rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-
+        .actions { padding: 0 1.25rem 1.25rem; display: flex; gap: 0.5rem; }
         .btn-open {
-            flex-grow: 1;
-            background-color: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            text-decoration: none;
-            text-align: center;
-            padding: 0.5rem;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            transition: var(--transition);
+            flex-grow: 1; text-decoration: none; background: transparent; border: 1px solid var(--accent);
+            color: var(--accent); text-align: center; padding: 0.5rem; border-radius: 6px;
+            font-size: 0.85rem; font-weight: 600; transition: var(--transition);
         }
-
-        .btn-open:hover {
-            background-color: var(--accent);
-            color: white;
+        .btn-open:hover { background: var(--accent); color: white; }
+        
+        .btn-icon {
+            background: var(--bg-input); border: 1px solid var(--border); color: white;
+            padding: 0.5rem; border-radius: 6px; cursor: pointer;
         }
-
-        .btn-menu {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            color: white;
-            padding: 0.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        /* DROPDOWN MENU */
-        .dropdown {
-            position: absolute;
-            bottom: 100%;
-            right: 0;
-            background-color: #1e293b;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            min-width: 120px;
-            display: none;
-            box-shadow: var(--shadow);
-            z-index: 10;
-            margin-bottom: 5px;
-        }
-
-        .dropdown.active {
-            display: block;
-        }
-
-        .dropdown-item {
-            padding: 0.75rem 1rem;
-            font-size: 0.875rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: white;
-        }
-
-        .dropdown-item:hover {
-            background-color: var(--bg-input);
-        }
-
-        .dropdown-item.delete {
-            color: var(--status-offline);
-        }
+        .btn-icon:hover { border-color: var(--text-muted); }
 
         /* MODAL */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 1rem;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none;
+            align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--bg-card); width: 100%; max-width: 500px; border-radius: 12px; padding: 2rem; border: 1px solid var(--border); }
+        .modal h2 { margin-bottom: 1.5rem; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; background: var(--bg-input); border: 1px solid var(--border);
+            padding: 0.7rem; border-radius: 6px; color: white; outline: none;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
+        .btn-cancel { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-weight: 600; }
 
-        .modal {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 550px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-        }
+        /* LOADING */
+        .loader { display: none; text-align: center; padding: 2rem; }
+        .loader.active { display: block; }
 
-        .modal-header {
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        label {
-            display: block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 0.4rem;
-        }
-
-        input, textarea, select.form-input {
-            width: 100%;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 0.75rem;
-            color: white;
-            outline: none;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* TOAST */
-        #toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: var(--accent);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            display: none;
-            animation: slideIn 0.3s ease-out;
-            z-index: 2000;
-        }
-
-        /* RESPONSIVIDADE */
         @media (max-width: 768px) {
-            header { padding: 1rem; flex-direction: column; align-items: stretch; }
-            .controls { flex-direction: column; align-items: stretch; }
+            header { flex-direction: column; align-items: stretch; }
+            .controls { flex-direction: column; }
             .search-container { max-width: none; }
-            .filter-group { display: grid; grid-template-columns: 1fr 1fr; }
-        }
-
-        /* PLACEHOLDER IMAGEM */
-        .image-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            background: linear-gradient(45deg, #1e293b 0%, #0f172a 100%);
-        }
-
-        .image-placeholder svg {
-            width: 48px;
-            height: 48px;
-            fill: #334155;
         }
     </style>
 </head>
 <body>
 
-    <!-- CABEÇALHO -->
     <header>
         <div class="logo-section">
             <svg viewBox="0 0 24 24"><path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,3.19L19,6.3V11C19,15.09 16.14,18.93 12,20.09C7.86,18.93 5,15.09 5,11V6.3L12,3.19M12,7C10.89,7 10,7.89 10,9C10,10.11 10.89,11 12,11C13.11,11 14,10.11 14,9C14,7.89 13.11,7 12,7M12,13C9.33,13 4,14.33 4,17V19H20V17C20,14.33 14.67,13 12,13Z"/></svg>
@@ -446,49 +164,35 @@
         <div class="controls">
             <div class="search-container">
                 <svg viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
-                <input type="text" id="searchInput" placeholder="Pesquisar dashboards...">
+                <input type="text" id="searchInput" placeholder="Pesquisar...">
             </div>
-
-            <div class="filter-group">
-                <select id="filterArea">
-                    <option value="">Todas as Áreas</option>
-                    <option value="Comercial">Comercial</option>
-                    <option value="Financeiro">Financeiro</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="Operações">Operações</option>
-                    <option value="TI">TI</option>
-                </select>
-
-                <select id="filterStatus">
-                    <option value="">Todos os Status</option>
-                    <option value="online">Online</option>
-                    <option value="manutencao">Manutenção</option>
-                    <option value="offline">Offline</option>
-                </select>
-            </div>
-
-            <button class="btn-new" id="btnNew">
+            <select id="filterArea">
+                <option value="">Todas as Áreas</option>
+                <option value="Comercial">Comercial</option>
+                <option value="Financeiro">Financeiro</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Operações">Operações</option>
+                <option value="TI">TI</option>
+            </select>
+            <button class="btn-primary" onclick="openModal()">
                 <svg style="width:20px;height:20px;fill:white" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>
                 Novo Dashboard
             </button>
         </div>
     </header>
 
-    <!-- ÁREA PRINCIPAL -->
+    <div id="mainLoader" class="loader active">Carregando dashboards...</div>
+
     <main>
-        <div class="dashboard-grid" id="dashboardGrid">
-            <!-- Cards serão inseridos aqui -->
-        </div>
+        <div class="dashboard-grid" id="grid"></div>
     </main>
 
-    <!-- MODAL DE CADASTRO / EDIÇÃO -->
-    <div class="modal-overlay" id="modalOverlay">
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal">
         <div class="modal">
-            <div class="modal-header">
-                <h2 id="modalTitle">Cadastrar Dashboard</h2>
-            </div>
+            <h2 id="modalTitle">Novo Dashboard</h2>
             <form id="dashForm">
-                <input type="hidden" id="dashId">
+                <input type="hidden" id="editId">
                 <div class="form-group">
                     <label>Nome do Dashboard</label>
                     <input type="text" id="name" required>
@@ -497,10 +201,10 @@
                     <label>Descrição</label>
                     <textarea id="description" rows="2" required></textarea>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem">
                     <div class="form-group">
                         <label>Área</label>
-                        <select id="area" class="form-input" required>
+                        <select id="area" required>
                             <option value="Comercial">Comercial</option>
                             <option value="Financeiro">Financeiro</option>
                             <option value="Marketing">Marketing</option>
@@ -510,7 +214,7 @@
                     </div>
                     <div class="form-group">
                         <label>Status</label>
-                        <select id="status" class="form-input" required>
+                        <select id="status" required>
                             <option value="online">Online</option>
                             <option value="manutencao">Manutenção</option>
                             <option value="offline">Offline</option>
@@ -518,233 +222,175 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Link do Dashboard</label>
-                    <input type="url" id="link" required placeholder="https://...">
+                    <label>URL do Dashboard</label>
+                    <input type="url" id="url" required>
                 </div>
                 <div class="form-group">
-                    <label>URL da Imagem (opcional)</label>
-                    <input type="url" id="image" placeholder="https://...">
+                    <label>URL da Imagem (Opcional)</label>
+                    <input type="url" id="image">
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" id="btnCancel">Cancelar</button>
-                    <button type="submit" class="btn-new">Salvar Dashboard</button>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="btnSave">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast">Operação realizada com sucesso!</div>
-
     <script>
-        // ESTADO DA APLICAÇÃO
-        let dashboards = JSON.parse(localStorage.getItem('dash_hub_data')) || [
-            {
-                id: 1,
-                name: "Performance Comercial",
-                description: "Análise completa de funil de vendas, metas mensais e conversão por vendedor.",
-                area: "Comercial",
-                status: "online",
-                link: "https://lookerstudio.google.com/",
-                image: "",
-                updated: "10 min atrás"
-            },
-            {
-                id: 2,
-                name: "Fluxo de Caixa",
-                description: "Relatório detalhado de entradas, saídas e projeção para o próximo trimestre.",
-                area: "Financeiro",
-                status: "manutencao",
-                link: "https://powerbi.microsoft.com/",
-                image: "",
-                updated: "1 hora atrás"
+        /**
+         * CONFIGURAÇÃO BACKEND
+         * Substitua pela URL gerada após implantar o Google Apps Script
+         */
+        const API_URL = "https://script.google.com/macros/s/AKfycbwyng6vHMu5eBcdTYhrTilHp9DcCIDDFmLR29-BiNkfLHD-5TzL-lC6mmwRqw4jUQK8ag/exec";
+
+        let allDashboards = [];
+
+        // BUSCAR DADOS
+        async function fetchDashboards() {
+            toggleLoader(true);
+            try {
+                const response = await fetch(API_URL);
+                allDashboards = await response.json();
+                render();
+            } catch (error) {
+                console.error("Erro ao carregar:", error);
+                alert("Erro ao conectar com a planilha. Verifique a URL da API.");
             }
-        ];
-
-        // SELETORES
-        const grid = document.getElementById('dashboardGrid');
-        const searchInput = document.getElementById('searchInput');
-        const filterArea = document.getElementById('filterArea');
-        const filterStatus = document.getElementById('filterStatus');
-        const btnNew = document.getElementById('btnNew');
-        const btnCancel = document.getElementById('btnCancel');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const dashForm = document.getElementById('dashForm');
-        const modalTitle = document.getElementById('modalTitle');
-        const toast = document.getElementById('toast');
-
-        // INICIALIZAÇÃO
-        function init() {
-            renderDashboards();
-            setupEventListeners();
+            toggleLoader(false);
         }
 
-        // RENDERIZAÇÃO DOS CARDS
-        function renderDashboards() {
-            const query = searchInput.value.toLowerCase();
-            const area = filterArea.value;
-            const status = filterStatus.value;
-
-            const filtered = dashboards.filter(d => {
-                const matchesSearch = d.name.toLowerCase().includes(query) || d.description.toLowerCase().includes(query);
-                const matchesArea = area === "" || d.area === area;
-                const matchesStatus = status === "" || d.status === status;
-                return matchesSearch && matchesArea && matchesStatus;
-            });
-
-            grid.innerHTML = '';
-
-            filtered.forEach(dash => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                
-                const statusLabels = {
-                    online: { text: 'Online', color: 'var(--status-online)' },
-                    manutencao: { text: 'Manutenção', color: 'var(--status-maintenence)' },
-                    offline: { text: 'Offline', color: 'var(--status-offline)' }
-                };
-
-                const currentStatus = statusLabels[dash.status];
-
-                card.innerHTML = `
-                    <div class="card-image" style="${dash.image ? `background-image: url('${dash.image}')` : ''}">
-                        ${!dash.image ? `<div class="image-placeholder"><svg viewBox="0 0 24 24"><path d="M19,5V19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M14,17H7V15H14V17M17,13H7V11H17V13M17,9H7V7H17V9Z"/></svg></div>` : ''}
-                    </div>
-                    <div class="card-content">
-                        <span class="area-badge">${dash.area}</span>
-                        <h3 class="card-title">${dash.name}</h3>
-                        <p class="card-description">${dash.description}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="status-pill">
-                            <div class="status-dot" style="background-color: ${currentStatus.color}"></div>
-                            ${currentStatus.text}
-                        </div>
-                        <span class="update-info">${dash.updated}</span>
-                    </div>
-                    <div class="card-actions">
-                        <a href="${dash.link}" target="_blank" class="btn-open">Abrir Dashboard</a>
-                        <button class="btn-menu" onclick="toggleMenu(event, ${dash.id})">
-                            <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"/></svg>
-                            <div class="dropdown" id="dropdown-${dash.id}">
-                                <div class="dropdown-item" onclick="editDashboard(${dash.id})">Editar</div>
-                                <div class="dropdown-item delete" onclick="deleteDashboard(${dash.id})">Remover</div>
-                            </div>
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // EVENT LISTENERS
-        function setupEventListeners() {
-            searchInput.addEventListener('input', renderDashboards);
-            filterArea.addEventListener('change', renderDashboards);
-            filterStatus.addEventListener('change', renderDashboards);
-            
-            btnNew.addEventListener('click', () => openModal());
-            btnCancel.addEventListener('click', closeModal);
-            
-            dashForm.addEventListener('submit', handleFormSubmit);
-
-            // Fechar menus ao clicar fora
-            window.addEventListener('click', () => {
-                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
-            });
-        }
-
-        // LÓGICA DO MODAL
-        function openModal(id = null) {
-            modalOverlay.classList.add('active');
-            if (id) {
-                modalTitle.innerText = "Editar Dashboard";
-                const dash = dashboards.find(d => d.id === id);
-                document.getElementById('dashId').value = dash.id;
-                document.getElementById('name').value = dash.name;
-                document.getElementById('description').value = dash.description;
-                document.getElementById('area').value = dash.area;
-                document.getElementById('status').value = dash.status;
-                document.getElementById('link').value = dash.link;
-                document.getElementById('image').value = dash.image;
-            } else {
-                modalTitle.innerText = "Cadastrar Dashboard";
-                dashForm.reset();
-                document.getElementById('dashId').value = "";
-            }
-        }
-
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-        }
-
-        function handleFormSubmit(e) {
+        // SALVAR / ATUALIZAR
+        async function handleSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('dashId').value;
+            const btnSave = document.getElementById('btnSave');
+            btnSave.disabled = true;
+            btnSave.innerText = "Salvando...";
+
+            const id = document.getElementById('editId').value;
             const data = {
+                action: id ? "update" : "create",
+                id: id || Date.now().toString(),
                 name: document.getElementById('name').value,
                 description: document.getElementById('description').value,
                 area: document.getElementById('area').value,
                 status: document.getElementById('status').value,
-                link: document.getElementById('link').value,
+                url: document.getElementById('url').value,
                 image: document.getElementById('image').value,
-                updated: "Agora"
+                updatedAt: new Date().toLocaleDateString('pt-BR')
             };
 
-            if (id) {
-                const index = dashboards.findIndex(d => d.id == id);
-                dashboards[index] = { ...dashboards[index], ...data };
-                showToast("Dashboard atualizado!");
-            } else {
-                data.id = Date.now();
-                dashboards.unshift(data);
-                showToast("Dashboard cadastrado!");
+            try {
+                await fetch(API_URL, {
+                    method: "POST",
+                    body: JSON.stringify(data)
+                });
+                closeModal();
+                fetchDashboards();
+            } catch (error) {
+                alert("Erro ao salvar.");
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerText = "Salvar";
             }
-
-            saveAndSync();
-            closeModal();
         }
 
-        // OPERAÇÕES CRUD
-        function deleteDashboard(id) {
-            if (confirm("Tem certeza que deseja remover este dashboard?")) {
-                dashboards = dashboards.filter(d => d.id !== id);
-                saveAndSync();
-                showToast("Dashboard removido!");
+        // REMOVER
+        async function removeDashboard(id) {
+            if (!confirm("Deseja realmente remover este dashboard?")) return;
+            
+            toggleLoader(true);
+            try {
+                await fetch(API_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "delete", id: id })
+                });
+                fetchDashboards();
+            } catch (error) {
+                alert("Erro ao remover.");
+                toggleLoader(false);
             }
+        }
+
+        // RENDERIZAR GRID
+        function render() {
+            const grid = document.getElementById('grid');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const area = document.getElementById('filterArea').value;
+
+            const filtered = allDashboards.filter(d => {
+                const matchesSearch = d.name.toLowerCase().includes(search) || d.description.toLowerCase().includes(search);
+                const matchesArea = !area || d.area === area;
+                return matchesSearch && matchesArea;
+            });
+
+            grid.innerHTML = filtered.map(d => `
+                <div class="card">
+                    <div class="card-img" style="${d.image ? `background-image: url('${d.image}')` : ''}">
+                        ${!d.image ? `<svg viewBox="0 0 24 24"><path d="M19,3H5C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3M19,19H5V5H19V19M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z"/></svg>` : ''}
+                    </div>
+                    <div class="card-body">
+                        <div class="area-label">${d.area}</div>
+                        <div class="card-title">${d.name}</div>
+                        <div class="card-desc">${d.description}</div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="status-pill">
+                            <div class="dot" style="background: var(--status-${d.status})"></div>
+                            ${d.status.toUpperCase()}
+                        </div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted)">Atu. em ${d.updatedAt}</div>
+                    </div>
+                    <div class="actions">
+                        <a href="${d.url}" target="_blank" class="btn-open">Abrir Dashboard</a>
+                        <button class="btn-icon" onclick="editDashboard('${d.id}')">
+                            <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6.01 20.71,5.63L18.37,3.29C17.99,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/></svg>
+                        </button>
+                        <button class="btn-icon" onclick="removeDashboard('${d.id}')">
+                            <svg style="width:18px;height:18px;fill:#EF4444" viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19V4M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // MODAL E AUXILIARES
+        function openModal() {
+            document.getElementById('dashForm').reset();
+            document.getElementById('editId').value = "";
+            document.getElementById('modalTitle').innerText = "Novo Dashboard";
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
         }
 
         function editDashboard(id) {
-            openModal(id);
+            const d = allDashboards.find(item => item.id === id);
+            if (!d) return;
+            document.getElementById('editId').value = d.id;
+            document.getElementById('name').value = d.name;
+            document.getElementById('description').value = d.description;
+            document.getElementById('area').value = d.area;
+            document.getElementById('status').value = d.status;
+            document.getElementById('url').value = d.url;
+            document.getElementById('image').value = d.image || "";
+            document.getElementById('modalTitle').innerText = "Editar Dashboard";
+            document.getElementById('modal').classList.add('active');
         }
 
-        function toggleMenu(e, id) {
-            e.stopPropagation();
-            const allDropdowns = document.querySelectorAll('.dropdown');
-            const target = document.getElementById(`dropdown-${id}`);
-            
-            allDropdowns.forEach(d => {
-                if (d !== target) d.classList.remove('active');
-            });
-            target.classList.toggle('active');
+        function toggleLoader(show) {
+            document.getElementById('mainLoader').classList.toggle('active', show);
         }
 
-        // PERSISTÊNCIA E AUXILIARES
-        function saveAndSync() {
-            localStorage.setItem('dash_hub_data', JSON.stringify(dashboards));
-            renderDashboards();
-        }
+        // LISTENERS
+        document.getElementById('dashForm').addEventListener('submit', handleSubmit);
+        document.getElementById('searchInput').addEventListener('input', render);
+        document.getElementById('filterArea').addEventListener('change', render);
 
-        function showToast(msg) {
-            toast.innerText = msg;
-            toast.style.display = 'block';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
-        }
-
-        // START
-        init();
+        // INIT
+        fetchDashboards();
     </script>
 </body>
 </html>
