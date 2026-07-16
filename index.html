@@ -299,28 +299,40 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        // CONFIGURAÇÃO FIREBASE (Uso de DB público para demonstração imediata)
-        // Em produção, substitua pelas suas credenciais do console.firebase.google.com
+        // CONFIGURAÇÃO FIREBASE
         const firebaseConfig = {
             databaseURL: "https://shopeehub-default-rtdb.firebaseio.com/" 
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database().ref('global_dashboards');
 
-        // Identificação Única do Usuário para Favoritos e Permissões de Edição
+        // IDENTIFICAÇÃO DO USUÁRIO
         if(!localStorage.getItem('shopee_uid')) {
             localStorage.setItem('shopee_uid', 'user_' + Math.random().toString(36).substr(2, 9));
         }
         const currentUid = localStorage.getItem('shopee_uid');
+        
+        // Simulação de Admin (Pode ser alterado para lógica de login real futuramente)
+        const isAdmin = localStorage.getItem('shopee_admin') === 'true';
 
-        // Dados e Estado
+        // ESTADO GLOBAL
         let dashboards = [];
         let state = { filter: 'all', search: '' };
         let recentIds = JSON.parse(localStorage.getItem('shopee_recent')) || [];
         let myFavs = JSON.parse(localStorage.getItem('shopee_favs')) || [];
 
-        // Inicialização com Sincronização em Tempo Real
+        // MAPEAMENTO DE ÍCONES POR TIPO
+        const typeIcons = {
+            'Power BI': 'fas fa-chart-pie',
+            'Sheets': 'fas fa-file-excel',
+            'HTML': 'fas fa-code',
+            'Forms': 'fas fa-list-alt',
+            'Data Studio': 'fas fa-chart-line'
+        };
+
+        // INICIALIZAÇÃO SINCRONIZADA
         function init() {
+            // Escuta em tempo real: qualquer mudança no Firebase reflete para todos os usuários
             db.on('value', (snapshot) => {
                 const data = snapshot.val();
                 dashboards = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
@@ -332,15 +344,19 @@
             setupTheme();
         }
 
+        // RENDERIZAÇÃO DE CARDS (Mantendo Layout Original)
         function renderCards() {
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
 
             const filtered = dashboards.filter(d => {
                 const searchLower = state.search.toLowerCase();
-                const matchesSearch = d.name.toLowerCase().includes(searchLower) || 
-                                      d.sector.toLowerCase().includes(searchLower) ||
-                                      d.owner.toLowerCase().includes(searchLower);
+                const matchesSearch = 
+                    d.name.toLowerCase().includes(searchLower) || 
+                    d.sector.toLowerCase().includes(searchLower) ||
+                    d.owner.toLowerCase().includes(searchLower) ||
+                    d.type.toLowerCase().includes(searchLower) ||
+                    (d.desc && d.desc.toLowerCase().includes(searchLower));
                 
                 let matchesNav = true;
                 const isFav = myFavs.includes(d.id);
@@ -355,36 +371,44 @@
             filtered.forEach(dash => {
                 const isFav = myFavs.includes(dash.id);
                 const isAuthor = dash.authorId === currentUid;
+                const iconClass = typeIcons[dash.type] || 'fas fa-external-link-alt';
                 
                 const card = document.createElement('div');
                 card.className = 'dash-card';
                 card.innerHTML = `
                     <div class="card-top">
-                        <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+                        <div class="card-icon" title="${dash.type}"><i class="${iconClass}"></i></div>
                         <button class="btn-icon btn-fav ${isFav ? 'active' : ''}" onclick="toggleFav('${dash.id}')">
                             <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
                         </button>
                     </div>
                     <div class="card-info">
-                        <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">${dash.sector}</span>
+                        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                             <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">${dash.sector}</span>
+                             <span style="font-size: 0.6rem; color: var(--text-muted); opacity: 0.7;">${dash.type}</span>
+                        </div>
                         <h4>${dash.name}</h4>
-                        <p>${dash.desc}</p>
+                        <p>${dash.desc || 'Sem descrição disponível.'}</p>
                     </div>
                     <div style="display: flex; gap: 8px;">
                         <button class="btn btn-primary" onclick="openDash('${dash.id}', '${dash.url}')" style="flex: 1; justify-content: center;">
                             Acessar Dashboard
                         </button>
-                        ${isAuthor ? `<button class="btn btn-icon" onclick="deleteDash('${dash.id}')"><i class="fas fa-trash"></i></button>` : ''}
+                        ${(isAuthor || isAdmin) ? `<button class="btn btn-icon" onclick="deleteDash('${dash.id}')" title="Excluir"><i class="fas fa-trash"></i></button>` : ''}
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px;">
-                        <span><i class="fas fa-user"></i> ${dash.owner}</span>
+                        <span><i class="fas fa-user-circle"></i> ${dash.owner}</span>
                         <span><i class="fas fa-eye"></i> ${dash.views || 0}</span>
+                    </div>
+                    <div style="font-size: 0.6rem; color: var(--text-muted); margin-top: -10px; text-align: right; opacity: 0.6;">
+                        ${new Date(dash.createdAt).toLocaleDateString('pt-br')}
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
+        // RENDERIZAÇÃO DE SETORES DINÂMICOS
         function renderSectors() {
             const sectors = [...new Set(dashboards.map(d => d.sector))];
             const container = document.getElementById('sector-list');
@@ -392,7 +416,7 @@
                 <div class="nav-item ${state.filter === s ? 'active' : ''}" data-filter="${s}"><i class="fas fa-folder"></i> <span>${s}</span></div>
             `).join('');
 
-            document.querySelectorAll('.nav-item').forEach(item => {
+            document.querySelectorAll('#sector-list .nav-item').forEach(item => {
                 item.onclick = () => {
                     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                     item.classList.add('active');
@@ -402,22 +426,26 @@
             });
         }
 
+        // AÇÃO DE ABRIR DASHBOARD (Global views + Local Recents)
         function openDash(id, url) {
-            // Histórico individual
-            if (!recentIds.includes(id)) {
-                recentIds.unshift(id);
-                if (recentIds.length > 5) recentIds.pop();
-                localStorage.setItem('shopee_recent', JSON.stringify(recentIds));
-            }
+            // Histórico individual (Local)
+            recentIds = recentIds.filter(rid => rid !== id);
+            recentIds.unshift(id);
+            if (recentIds.length > 8) recentIds.pop();
+            localStorage.setItem('shopee_recent', JSON.stringify(recentIds));
             
-            // Incremento de acessos global
+            // Incremento de acessos global (Firebase)
             const dash = dashboards.find(d => d.id === id);
-            db.child(id).update({ views: (dash.views || 0) + 1 });
+            db.child(id).update({ 
+                views: (dash.views || 0) + 1,
+                lastAccess: new Date().toISOString()
+            });
             
-            showToast("Redirecionando para o portal...");
+            showToast("Abrindo portal de dados...");
             setTimeout(() => window.open(url, '_blank'), 400);
         }
 
+        // FAVORITOS (Local)
         function toggleFav(id) {
             const index = myFavs.indexOf(id);
             if(index > -1) myFavs.splice(index, 1);
@@ -428,15 +456,25 @@
             updateStats();
         }
 
+        // EXCLUSÃO (Segurança: Autor ou Admin)
         function deleteDash(id) {
-            if(confirm("Remover este acesso da biblioteca compartilhada?")) {
-                db.child(id).remove();
-                showToast("Dashboard removido!");
+            const dash = dashboards.find(d => d.id === id);
+            if(!dash) return;
+
+            if(dash.authorId === currentUid || isAdmin) {
+                if(confirm("Deseja remover este projeto permanentemente da biblioteca global?")) {
+                    db.child(id).remove();
+                    showToast("Removido com sucesso!");
+                }
+            } else {
+                alert("Apenas o autor ou administradores podem excluir este projeto.");
             }
         }
 
+        // SALVAR NO PORTAL (Firebase Realtime)
         document.getElementById('dashForm').onsubmit = (e) => {
             e.preventDefault();
+            
             const newDash = {
                 name: document.getElementById('name').value,
                 sector: document.getElementById('sector').value,
@@ -444,17 +482,22 @@
                 type: document.getElementById('type').value,
                 owner: document.getElementById('owner').value,
                 url: document.getElementById('url').value,
-                authorId: currentUid, // Registro de quem criou
+                authorId: currentUid,
                 views: 0,
                 createdAt: new Date().toISOString()
             };
             
-            db.push(newDash);
-            closeModal();
-            document.getElementById('dashForm').reset();
-            showToast("Adicionado à biblioteca global!");
+            // Salva no banco compartilhado
+            db.push(newDash).then(() => {
+                closeModal();
+                document.getElementById('dashForm').reset();
+                showToast("Publicado na Biblioteca Global!");
+            }).catch(err => {
+                alert("Erro ao salvar: " + err.message);
+            });
         };
 
+        // ESTATÍSTICAS TOTAIS
         function updateStats() {
             document.getElementById('stat-total').innerText = dashboards.length;
             document.getElementById('stat-favs').innerText = myFavs.filter(id => dashboards.some(d => d.id === id)).length;
@@ -462,16 +505,18 @@
             document.getElementById('stat-sectors').innerText = [...new Set(dashboards.map(d => d.sector))].length;
         }
 
+        // RELÓGIO
         function startClock() {
             const update = () => {
                 const now = new Date();
                 document.getElementById('time').innerText = now.toLocaleTimeString('pt-br');
-                document.getElementById('date').innerText = now.toLocaleDateString('pt-br');
+                document.getElementById('date').innerText = now.toLocaleDateString('pt-br', { day: '2-digit', month: 'long', year: 'numeric' });
             };
             setInterval(update, 1000);
             update();
         }
 
+        // UI HELPERS
         function showToast(msg) {
             const t = document.getElementById('toast');
             t.innerText = msg; t.style.display = 'block';
@@ -492,6 +537,17 @@
         function closeModal() { document.getElementById('modal').classList.remove('active'); }
         document.getElementById('searchInput').oninput = (e) => { state.search = e.target.value; renderCards(); };
 
+        // FILTROS DE NAVEGAÇÃO FIXOS
+        document.querySelectorAll('.nav-group:first-of-type .nav-item').forEach(item => {
+            item.onclick = () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                state.filter = item.dataset.filter;
+                renderCards();
+            };
+        });
+
+        // INICIAR PORTAL
         init();
     </script>
 </body>
