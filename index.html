@@ -1,657 +1,494 @@
 <!DOCTYPE html>
-<html lang="pt-br" data-theme="light">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPX Hub | Shopee Portal</title>
-
-    <!-- Fontes e Ícones -->
-    <style type="text/css">@font-face {font-family:Inter;font-style:normal;font-weight:300;src:url(/cf-fonts/v/inter/5.2.8/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:300;src:url(/cf-fonts/v/inter/5.2.8/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:300;src:url(/cf-fonts/v/inter/5.2.8/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:300;src:url(/cf-fonts/v/inter/5.2.8/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:300;src:url(/cf-fonts/v/inter/5.2.8/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:300;src:url(/cf-fonts/v/inter/5.2.8/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:300;src:url(/cf-fonts/v/inter/5.2.8/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:400;src:url(/cf-fonts/v/inter/5.2.8/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:400;src:url(/cf-fonts/v/inter/5.2.8/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:400;src:url(/cf-fonts/v/inter/5.2.8/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:400;src:url(/cf-fonts/v/inter/5.2.8/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:400;src:url(/cf-fonts/v/inter/5.2.8/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:400;src:url(/cf-fonts/v/inter/5.2.8/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:400;src:url(/cf-fonts/v/inter/5.2.8/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:500;src:url(/cf-fonts/v/inter/5.2.8/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:500;src:url(/cf-fonts/v/inter/5.2.8/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:500;src:url(/cf-fonts/v/inter/5.2.8/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:500;src:url(/cf-fonts/v/inter/5.2.8/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:500;src:url(/cf-fonts/v/inter/5.2.8/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:500;src:url(/cf-fonts/v/inter/5.2.8/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:500;src:url(/cf-fonts/v/inter/5.2.8/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:600;src:url(/cf-fonts/v/inter/5.2.8/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:600;src:url(/cf-fonts/v/inter/5.2.8/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:600;src:url(/cf-fonts/v/inter/5.2.8/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:600;src:url(/cf-fonts/v/inter/5.2.8/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:600;src:url(/cf-fonts/v/inter/5.2.8/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:600;src:url(/cf-fonts/v/inter/5.2.8/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:600;src:url(/cf-fonts/v/inter/5.2.8/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:700;src:url(/cf-fonts/v/inter/5.2.8/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:700;src:url(/cf-fonts/v/inter/5.2.8/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:700;src:url(/cf-fonts/v/inter/5.2.8/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:700;src:url(/cf-fonts/v/inter/5.2.8/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:700;src:url(/cf-fonts/v/inter/5.2.8/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:700;src:url(/cf-fonts/v/inter/5.2.8/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:Inter;font-style:normal;font-weight:700;src:url(/cf-fonts/v/inter/5.2.8/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}</style>
+    <title>Dashboard Hub | Central de Inteligência</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <style>
         :root {
-            /* Identidade Shopee */
-            --shopee-orange: #EE4D2D;
-            --shopee-orange-hover: #d73211;
-            --shopee-bg: #f5f5f5;
-
-            /* Tema Claro */
-            --bg-body: var(--shopee-bg);
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --text-main: #222222;
-            --text-muted: #757575;
-            --primary: var(--shopee-orange);
-            --primary-light: #fff5f1;
-            --border: #e8e8e8;
-            --shadow: 0 2px 10px rgba(0,0,0,0.05);
-            --radius: 8px;
-            --sidebar-width: 260px;
-            --transition: all 0.25s ease;
+            --bg-body: #0d1117;
+            --bg-card: #161b22;
+            --bg-nav: #161b22;
+            --border-color: #30363d;
+            --text-main: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #EE4D2D;
+            --accent-hover: #ff6a4d;
+            --status-online: #238636;
+            --status-maintenence: #d29922;
+            --status-offline: #f85149;
+            --font-family: 'Inter', sans-serif;
+            --transition: all 0.3s ease;
         }
 
-        [data-theme="dark"] {
-            --bg-body: #121212;
-            --bg-sidebar: #1e1e1e;
-            --bg-card: #252525;
-            --text-main: #f5f5f5;
-            --text-muted: #aaaaaa;
-            --border: #333333;
-            --shadow: 0 4px 20px rgba(0,0,0,0.4);
-            --primary-light: rgba(238, 77, 45, 0.1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; transition: var(--transition); }
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-        /* Sidebar */
-        aside {
-            width: var(--sidebar-width);
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--bg-nav);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-area i {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .logo-area h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- Controls (Search & Filters) --- */
+        .controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box input {
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 12px 10px 35px;
+            color: var(--text-main);
+            width: 300px;
+            outline: none;
             transition: var(--transition);
         }
 
-        .sidebar-header {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            gap: 10px;
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(238, 77, 45, 0.2);
         }
 
-        /* Logo Container */
-        .logo-container {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary);
-            text-decoration: none;
+        select {
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
         }
-        .logo-icon {
-            background: var(--primary);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+
+        /* --- Main Content --- */
+        main {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- Dashboard Cards --- */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-header .icon-box {
+            width: 45px;
+            height: 45px;
+            background: rgba(238, 77, 45, 0.1);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 8px rgba(238, 77, 45, 0.3);
-        }
-        .logo-text { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
-
-        .nav-group { padding: 15px; }
-        .nav-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; padding-left: 10px; }
-        .nav-item {
-            display: flex; align-items: center; padding: 10px 15px; text-decoration: none; color: var(--text-main);
-            border-radius: 4px; gap: 12px; transition: var(--transition); margin-bottom: 2px; cursor: pointer;
-            font-size: 0.9rem; font-weight: 500;
-        }
-        .nav-item:hover { color: var(--primary); background: var(--primary-light); }
-        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.2); }
-
-        /* Main Content */
-        main { flex: 1; margin-left: var(--sidebar-width); padding: 25px; transition: var(--transition); }
-
-        /* Header Area */
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 20px; }
-        .search-box {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px;
-            padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 600px;
-        }
-        .search-box input { border: none; background: transparent; color: var(--text-main); outline: none; width: 100%; font-size: 0.9rem; }
-
-        .header-tools { display: flex; align-items: center; gap: 20px; }
-        .clock-box { text-align: right; border-right: 2px solid var(--border); padding-right: 20px; }
-        .clock-box #time { font-weight: 700; font-size: 1.1rem; color: var(--primary); display: block; }
-        .clock-box #date { font-size: 0.75rem; color: var(--text-muted); }
-
-        /* Stats Section */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card {
-            background: var(--bg-card); padding: 20px; border-radius: 4px; border-bottom: 3px solid var(--border);
-            display: flex; flex-direction: column; box-shadow: var(--shadow); transition: var(--transition);
-        }
-        .stat-card:hover { border-bottom-color: var(--primary); transform: translateY(-2px); }
-        .stat-card span { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 5px; }
-        .stat-card h3 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); }
-
-        /* Dashboard Grid */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .dash-card {
-            background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);
-            padding: 20px; position: relative; transition: var(--transition);
-            display: flex; flex-direction: column; gap: 15px;
-        }
-        .dash-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary); }
-
-        .card-top { display: flex; justify-content: space-between; align-items: center; }
-        .card-icon {
-            width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem; background: var(--primary-light); color: var(--primary);
+            color: var(--accent);
+            font-size: 1.2rem;
         }
 
-        .card-info h4 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 5px; }
-        .card-info p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; height: 40px; overflow: hidden; }
-
-        /* Buttons */
-        .btn {
-            padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer;
-            font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--shopee-orange-hover); }
-        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-        .btn-outline:hover { background: var(--primary-light); }
-        .btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); width: 36px; height: 36px; justify-content: center; }
-        .btn-fav.active { color: var(--primary); }
 
-        /* Modal */
-        .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
-            display: none; align-items: center; justify-content: center; z-index: 1000;
-        }
-        .modal.active { display: flex; }
-        .modal-content {
-            background: var(--bg-card); width: 95%; max-width: 600px; padding: 30px;
-            border-radius: 4px; box-shadow: var(--shadow); position: relative;
-        }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-        label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
-        input, textarea, select {
-            padding: 10px; border-radius: 4px; border: 1px solid var(--border);
-            background: var(--bg-body); color: var(--text-main); outline: none;
-        }
-        input:focus { border-color: var(--primary); }
+        .status-online { background: rgba(35, 134, 54, 0.15); color: #3fb950; }
+        .status-maintenance { background: rgba(210, 153, 34, 0.15); color: #d29922; }
+        .status-offline { background: rgba(248, 81, 73, 0.15); color: #f85149; }
 
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 30px; border-radius: 4px; display: none; z-index: 2000; box-shadow: var(--shadow); }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
 
-        /* Responsividade */
-        @media (max-width: 1024px) {
-            aside { width: 70px; }
-            aside .logo-text, aside .nav-item span, aside .nav-title { display: none; }
-            main { margin-left: 70px; }
-            .sidebar-header { padding: 15px 5px; }
+        .dot-online { background-color: #3fb950; box-shadow: 0 0 8px #3fb950; }
+        .dot-maintenance { background-color: #d29922; }
+        .dot-offline { background-color: #f85149; }
+
+        .card-body h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .card-body p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 2.8rem;
+        }
+
+        .card-meta {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .meta-label { color: var(--text-muted); }
+        .meta-value { font-weight: 500; }
+
+        .btn-open {
+            margin-top: 1.2rem;
+            width: 100%;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-open:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Empty State --- */
+        #no-results {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            grid-column: 1 / -1;
+        }
+
+        #no-results i {
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+
+            .controls {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
 <body>
 
-    <aside id="sidebar">
-        <div class="sidebar-header">
-            <a href="#" class="logo-container">
-                <div class="logo-icon"><i class="fas fa-shopping-bag"></i></div>
-                <div class="logo-text">Shopee<span style="color:var(--text-main)">Hub</span></div>
-            </a>
+    <header>
+        <div class="logo-area">
+            <i class="fa-solid fa-layer-group"></i>
+            <h1>Dashboard Hub</h1>
         </div>
 
-        <nav class="nav-group">
-            <p class="nav-title">Navegação</p>
-            <div class="nav-item active" data-filter="all"><i class="fas fa-home"></i> <span>Início</span></div>
-            <div class="nav-item" data-filter="favoritos"><i class="fas fa-heart"></i> <span>Favoritos</span></div>
-            <div class="nav-item" data-filter="recentes"><i class="fas fa-clock"></i> <span>Recentes</span></div>
-        </nav>
-
-        <nav class="nav-group">
-            <p class="nav-title">Departamentos</p>
-            <div id="sector-list">
-                <!-- Preenchido via JS -->
+        <div class="controls">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar dashboards...">
             </div>
-        </nav>
-    </aside>
+
+            <select id="areaFilter">
+                <option value="all">Todas as Áreas</option>
+                <option value="Comercial">Comercial</option>
+                <option value="Financeiro">Financeiro</option>
+                <option value="Operações">Operações</option>
+                <option value="Marketing">Marketing</option>
+                <option value="TI">TI</option>
+            </select>
+
+            <select id="statusFilter">
+                <option value="all">Todos os Status</option>
+                <option value="online">🟢 Online</option>
+                <option value="manutencao">🟡 Manutenção</option>
+                <option value="offline">🔴 Offline</option>
+            </select>
+        </div>
+    </header>
 
     <main>
-        <header>
-            <div class="search-box">
-                <i class="fas fa-search" style="color: var(--text-muted)"></i>
-                <input type="text" id="searchInput" placeholder="Pesquisar por nome, responsável ou setor...">
-            </div>
-            <div class="header-tools">
-                <div class="clock-box">
-                    <span id="time">00:00:00</span>
-                    <span id="date">--/--/----</span>
-                </div>
-                <button class="btn btn-icon" id="themeToggle" title="Alternar Tema"><i class="fas fa-moon"></i></button>
-                <button class="btn btn-primary" id="btnNew"><i class="fas fa-plus"></i> Novo Dashboard</button>
-            </div>
-        </header>
+        <div class="grid-container" id="dashboardGrid">
+            <!-- Cards serão inseridos aqui via JavaScript -->
+        </div>
 
-        <section class="stats-grid">
-            <div class="stat-card"><span>Total de Ativos</span><h3 id="stat-total">0</h3></div>
-            <div class="stat-card"><span>Meus Favoritos</span><h3 id="stat-favs">0</h3></div>
-            <div class="stat-card"><span>Acessos Totais</span><h3 id="stat-views">0</h3></div>
-            <div class="stat-card"><span>Categorias</span><h3 id="stat-sectors">0</h3></div>
-        </section>
-
-        <div class="dashboard-grid" id="grid">
-            <!-- Cards gerados dinamicamente -->
+        <div id="no-results">
+            <i class="fa-regular fa-face-frown"></i>
+            <p>Nenhum dashboard encontrado com os critérios selecionados.</p>
         </div>
     </main>
 
-    <!-- Modal Form -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle" style="margin-bottom: 20px; color: var(--primary)">Cadastrar Dashboard</h2>
-            <form id="dashForm">
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Nome do Dashboard</label>
-                        <input type="text" id="name" required placeholder="Ex: Insira o nome do projeto...">
-                    </div>
-                    <div class="input-group">
-                        <label>Setor</label>
-                        <select id="sector" required>
-                            <option value="Operação">Operação</option>
-                            <option value="Gestão">Gestão</option>
-                            <option value="Comercial">Comercial</option>
-                            <option value="Logística">Logística</option>
-                            <option value="Marketing">Marketing</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Descrição Curta</label>
-                    <textarea id="desc" rows="2" placeholder="Descreva brevemente o uso deste link..."></textarea>
-                </div>
-                <div class="form-grid">
-                    <div class="input-group">
-                        <label>Tipo de Ferramenta</label>
-                        <select id="type">
-                            <option value="Power BI">Power BI</option>
-                            <option value="Sheets">Google Sheets</option>
-                            <option value="HTML">Sistema HTML</option>
-                            <option value="Forms">Google Forms</option>
-                            <option value="Data Studio">Data Studio</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Responsável</label>
-                        <input type="text" id="owner" placeholder="Nome do responsável">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>URL / Link de Acesso</label>
-                    <input type="text" id="url" required placeholder="https://exemplo.com/dashboard">
-                </div>
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="btnSave">Salvar no Portal</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="toast" id="toast">Sucesso!</div>
-
-    <!-- Firebase SDK (Compat Version) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-
     <script>
-        // ╔════════════════════════════════════════════════════════════════════╗
-        // ║  CONFIGURAÇÃO FIREBASE - INSIRA SUAS CREDENCIAIS ABAIXO            ║
-        // ║  Obtenha em: https://console.firebase.google.com                   ║
-        // ║  Projeto > Configurações > Geral > Seus apps > SDK do Firebase     ║
-        // ║  IMPORTANTE: o campo databaseURL é obrigatório para o              ║
-        // ║  Realtime Database funcionar.                                      ║
-        // ╚════════════════════════════════════════════════════════════════════╝
-        const firebaseConfig = {
-            apiKey: "COLE_SUA_API_KEY_AQUI",
-            authDomain: "SEU_PROJETO.firebaseapp.com",
-            databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
-            projectId: "SEU_PROJETO",
-            storageBucket: "SEU_PROJETO.appspot.com",
-            messagingSenderId: "000000000000",
-            appId: "1:000000000000:web:abcdef123456"
-        };
-        // ╔════════════════════════════════════════════════════════════════════╗
-        // ║  FIM DA CONFIGURAÇÃO - NÃO ALTERE NADA ABAIXO DESTA LINHA          ║
-        // ╚════════════════════════════════════════════════════════════════════╝
-
-        // --- INICIALIZAÇÃO FIREBASE (com validação de credenciais) ---
-        let db = null;
-        let firebaseConnected = false;
-
-        const configPending = /COLE_SUA_API_KEY_AQUI|SEU_PROJETO/.test(JSON.stringify(firebaseConfig));
-
-        try {
-            if (configPending) {
-                throw new Error("Credenciais do Firebase ainda não foram preenchidas.");
+        /**
+         * FONTE DE DADOS DINÂMICA
+         * Você pode substituir este array pelo resultado de um fetch de API,
+         * Google Sheets ou um arquivo JSON externo.
+         */
+        const DASHBOARD_DATA = [
+            {
+                id: 1,
+                nome: "Performance de Vendas",
+                descricao: "Acompanhamento em tempo real de KPIs de vendas, conversão e metas mensais por região.",
+                area: "Comercial",
+                atualizacao: "10 min atrás",
+                status: "online",
+                url: "https://lookerstudio.google.com/",
+                icon: "fa-chart-line"
+            },
+            {
+                id: 2,
+                nome: "Fluxo de Caixa",
+                descricao: "Visão consolidada de entradas, saídas e projeção financeira para o próximo trimestre.",
+                area: "Financeiro",
+                atualizacao: "1 hora atrás",
+                status: "online",
+                url: "https://powerbi.microsoft.com/",
+                icon: "fa-comments-dollar"
+            },
+            {
+                id: 3,
+                nome: "Infraestrutura Server",
+                descricao: "Monitoramento de carga de CPU, memória e latência dos servidores de produção.",
+                area: "TI",
+                atualizacao: "Sincronizado",
+                status: "online",
+                url: "https://grafana.com/",
+                icon: "fa-server"
+            },
+            {
+                id: 4,
+                nome: "Logística e Fretes",
+                descricao: "Status de entregas, custos de frete e performance de transportadoras parceiras.",
+                area: "Operações",
+                atualizacao: "Ontem, 18:30",
+                status: "manutencao",
+                url: "#",
+                icon: "fa-truck-fast"
+            },
+            {
+                id: 5,
+                nome: "Campanhas Digitais",
+                descricao: "ROI de Ads, engajamento em redes sociais e funil de conversão de leads.",
+                area: "Marketing",
+                atualizacao: "2 horas atrás",
+                status: "online",
+                url: "#",
+                icon: "fa-bullhorn"
+            },
+            {
+                id: 6,
+                nome: "Churn & Retention",
+                descricao: "Análise de comportamento de clientes e taxas de cancelamento mensais.",
+                area: "Comercial",
+                atualizacao: "3 dias atrás",
+                status: "offline",
+                url: "#",
+                icon: "fa-user-minus"
             }
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            db = firebase.database().ref('global_dashboards');
-            firebaseConnected = true;
-        } catch (error) {
-            console.error("Erro ao inicializar Firebase:", error.message);
-        }
+        ];
 
-        // --- IDENTIDADE E ESTADO ---
-        if (!localStorage.getItem('shopee_uid')) {
-            localStorage.setItem('shopee_uid', 'u' + Date.now() + Math.random().toString(36).substr(2, 5));
-        }
-        const currentUid = localStorage.getItem('shopee_uid');
+        const grid = document.getElementById('dashboardGrid');
+        const searchInput = document.getElementById('searchInput');
+        const areaFilter = document.getElementById('areaFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const noResults = document.getElementById('no-results');
 
-        const checkAdmin = () => localStorage.getItem('shopee_admin') === 'true';
-
-        let dashboards = [];
-        let state = { filter: 'all', search: '' };
-        let recentIds = JSON.parse(localStorage.getItem('shopee_recent')) || [];
-        let myFavs = JSON.parse(localStorage.getItem('shopee_favs')) || [];
-        let editModeId = null; // Variável para controlar ID em edição
-
-        // Escapa texto para inserção segura no HTML dos cards
-        const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-
-        // --- INICIALIZAÇÃO ---
-        function init() {
-            startClock();
-            setupTheme();
-
-            if (!firebaseConnected || !db) {
-                showToast(configPending
-                    ? "Configure as credenciais do Firebase no código para ativar o portal."
-                    : "Erro de conexão com o servidor. Verifique as credenciais.");
+        // Função para renderizar os cards
+        function renderDashboards(data) {
+            grid.innerHTML = '';
+            
+            if (data.length === 0) {
+                noResults.style.display = 'block';
                 return;
             }
 
-            // Escuta o Firebase em tempo real (Sincronização Global)
-            // Qualquer cadastro, exclusão ou incremento de acessos feito por
-            // qualquer usuário atualiza todos os navegadores conectados.
-            db.on('value', (snapshot) => {
-                const data = snapshot.val();
-                dashboards = data ? Object.keys(data).map(key => ({ ...data[key], firebaseId: key })) : [];
-                renderSectors();
-                renderCards();
-                updateStats();
-            }, (error) => {
-                console.error("Erro na sincronização Firebase:", error);
-                showToast("Erro ao carregar dados. Verifique as regras do banco e sua conexão.");
-            });
+            noResults.style.display = 'none';
 
-            // Detecta conexão/desconexão
-            firebase.database().ref('.info/connected').on('value', (snap) => {
-                console.log(snap.val() === true ? "Firebase conectado." : "Firebase desconectado.");
-            });
-        }
-
-        // --- RENDERIZAÇÃO ---
-        function renderCards() {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-
-            const filtered = dashboards.filter(d => {
-                const searchTerm = state.search.toLowerCase();
-                const matchesSearch = (d.name || '').toLowerCase().includes(searchTerm) ||
-                                      (d.sector || '').toLowerCase().includes(searchTerm) ||
-                                      (d.owner || '').toLowerCase().includes(searchTerm);
-
-                let matchesNav = true;
-                const isFav = myFavs.includes(d.firebaseId);
-
-                if (state.filter === 'favoritos') matchesNav = isFav;
-                else if (state.filter === 'recentes') matchesNav = recentIds.includes(d.firebaseId);
-                else if (state.filter !== 'all') matchesNav = d.sector === state.filter;
-
-                return matchesSearch && matchesNav;
-            });
-
-            filtered.forEach(dash => {
-                const isFav = myFavs.includes(dash.firebaseId);
-                const canModify = dash.authorId === currentUid || checkAdmin();
-                const safeUrl = encodeURIComponent(dash.url || '');
-
+            data.forEach(dash => {
+                const statusInfo = getStatusDetails(dash.status);
+                
                 const card = document.createElement('div');
-                card.className = 'dash-card';
+                card.className = 'card';
                 card.innerHTML = `
-                    <div class="card-top">
-                        <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
-                        <button class="btn-icon btn-fav ${isFav ? 'active' : ''}" onclick="toggleFav('${dash.firebaseId}')">
-                            <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
-                        </button>
+                    <div class="card-header">
+                        <div class="icon-box">
+                            <i class="fa-solid ${dash.icon}"></i>
+                        </div>
+                        <span class="status-badge ${statusInfo.class}">
+                            <span class="status-dot ${statusInfo.dotClass}"></span>
+                            ${statusInfo.label}
+                        </span>
                     </div>
-                    <div class="card-info">
-                        <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">${esc(dash.sector)}</span>
-                        <h4>${esc(dash.name) || 'Sem nome'}</h4>
-                        <p>${esc(dash.desc)}</p>
+                    <div class="card-body">
+                        <h3>${dash.nome}</h3>
+                        <p>${dash.descricao}</p>
                     </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-primary" onclick="openDash('${dash.firebaseId}', '${safeUrl}')" style="flex: 1; justify-content: center;">
-                            Acessar Dashboard
-                        </button>
-                        ${canModify ? `
-                            <button class="btn btn-icon" onclick="openEditModal('${dash.firebaseId}')" title="Editar"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-icon" onclick="deleteDash('${dash.firebaseId}')" title="Excluir"><i class="fas fa-trash"></i></button>
-                        ` : ''}
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px;">
-                        <span><i class="fas fa-user"></i> ${esc(dash.owner) || 'N/A'}</span>
-                        <span><i class="fas fa-eye"></i> ${dash.views || 0}</span>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Área</span>
+                            <span class="meta-value">${dash.area}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Atualizado</span>
+                            <span class="meta-value">${dash.atualizacao}</span>
+                        </div>
+                        <a href="${dash.url}" target="_blank" class="btn-open">
+                            Abrir Dashboard <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function renderSectors() {
-            const sectors = [...new Set(dashboards.map(d => d.sector).filter(Boolean))];
-            const container = document.getElementById('sector-list');
-            container.innerHTML = sectors.map(s => `
-                <div class="nav-item ${state.filter === s ? 'active' : ''}" data-filter="${esc(s)}"><i class="fas fa-folder"></i> <span>${esc(s)}</span></div>
-            `).join('');
+        // Auxiliar para estilos de status
+        function getStatusDetails(status) {
+            switch(status) {
+                case 'online': return { label: 'Online', class: 'status-online', dotClass: 'dot-online' };
+                case 'manutencao': return { label: 'Manutenção', class: 'status-maintenance', dotClass: 'dot-maintenance' };
+                case 'offline': return { label: 'Offline', class: 'status-offline', dotClass: 'dot-offline' };
+                default: return { label: 'N/A', class: '', dotClass: '' };
+            }
+        }
 
-            document.querySelectorAll('#sector-list .nav-item').forEach(item => {
-                item.onclick = () => {
-                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                    item.classList.add('active');
-                    state.filter = item.dataset.filter;
-                    renderCards();
-                };
+        // Lógica de Filtro e Pesquisa
+        function filterDashboards() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedArea = areaFilter.value;
+            const selectedStatus = statusFilter.value;
+
+            const filtered = DASHBOARD_DATA.filter(dash => {
+                const matchesSearch = dash.nome.toLowerCase().includes(searchTerm) || 
+                                    dash.descricao.toLowerCase().includes(searchTerm);
+                const matchesArea = selectedArea === 'all' || dash.area === selectedArea;
+                const matchesStatus = selectedStatus === 'all' || dash.status === selectedStatus;
+
+                return matchesSearch && matchesArea && matchesStatus;
             });
+
+            renderDashboards(filtered);
         }
 
-        // --- AÇÕES ---
-        function openDash(id, encodedUrl) {
-            const url = decodeURIComponent(encodedUrl);
+        // Listeners
+        searchInput.addEventListener('input', filterDashboards);
+        areaFilter.addEventListener('change', filterDashboards);
+        statusFilter.addEventListener('change', filterDashboards);
 
-            // Histórico Recentes (Individual - LocalStorage)
-            if (!recentIds.includes(id)) {
-                recentIds.unshift(id);
-                if (recentIds.length > 5) recentIds.pop();
-                localStorage.setItem('shopee_recent', JSON.stringify(recentIds));
-            }
-
-            // Incremento de Acessos (Global no Firebase)
-            if (firebaseConnected && db) {
-                db.child(id).child('views').transaction(v => (v || 0) + 1)
-                    .catch(err => console.error("Erro ao atualizar views:", err));
-            }
-
-            showToast("Redirecionando para o portal...");
-            setTimeout(() => window.open(url, '_blank'), 400);
-        }
-
-        function toggleFav(id) {
-            const index = myFavs.indexOf(id);
-            if (index > -1) {
-                myFavs.splice(index, 1);
-            } else {
-                myFavs.push(id);
-            }
-            localStorage.setItem('shopee_favs', JSON.stringify(myFavs));
-            renderCards();
-            updateStats();
-        }
-
-        function deleteDash(id) {
-            if (!firebaseConnected || !db) {
-                showToast("Erro: sem conexão com o servidor.");
-                return;
-            }
-
-            if (confirm("Remover este acesso da biblioteca compartilhada?")) {
-                db.child(id).remove()
-                    .then(() => showToast("Dashboard removido!"))
-                    .catch(err => {
-                        console.error("Erro ao excluir:", err);
-                        showToast("Erro ao excluir do servidor.");
-                    });
-            }
-        }
-
-        // --- EDIÇÃO ---
-        function openEditModal(id) {
-            const dash = dashboards.find(d => d.firebaseId === id);
-            if (!dash) return;
-
-            editModeId = id;
-
-            // Preenche campos
-            document.getElementById('name').value = dash.name || '';
-            document.getElementById('sector').value = dash.sector || 'Operação';
-            document.getElementById('desc').value = dash.desc || '';
-            document.getElementById('type').value = dash.type || 'Power BI';
-            document.getElementById('owner').value = dash.owner || '';
-            document.getElementById('url').value = dash.url || '';
-
-            // Altera Modal para modo Edição
-            document.getElementById('modalTitle').innerText = "Editar Dashboard";
-            document.getElementById('btnSave').innerText = "Salvar Alterações";
-
-            document.getElementById('modal').classList.add('active');
-        }
-
-        // --- SUBMISSÃO ---
-        document.getElementById('dashForm').onsubmit = (e) => {
-            e.preventDefault();
-
-            if (!firebaseConnected || !db) {
-                showToast(configPending
-                    ? "Configure as credenciais do Firebase no código para salvar."
-                    : "Erro: sem conexão com o servidor.");
-                return;
-            }
-
-            const btnSave = document.getElementById('btnSave');
-            const originalText = btnSave.innerText;
-
-            btnSave.disabled = true;
-            btnSave.innerText = "Salvando...";
-
-            let url = document.getElementById('url').value.trim();
-            if (url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
-
-            const dashData = {
-                name: document.getElementById('name').value.trim(),
-                sector: document.getElementById('sector').value,
-                desc: document.getElementById('desc').value.trim(),
-                type: document.getElementById('type').value,
-                owner: document.getElementById('owner').value.trim(),
-                url: url,
-                updatedAt: firebase.database.ServerValue.TIMESTAMP
-            };
-
-            const promise = editModeId
-                ? db.child(editModeId).update(dashData) // Atualiza registro existente
-                : db.push({ ...dashData, views: 0, authorId: currentUid, createdAt: firebase.database.ServerValue.TIMESTAMP }); // Cria novo
-
-            promise
-                .then(() => {
-                    closeModal();
-                    document.getElementById('dashForm').reset();
-                    showToast(editModeId ? "Alterações salvas com sucesso!" : "Dashboard adicionado à biblioteca global!");
-                })
-                .catch(err => {
-                    console.error("Erro ao salvar:", err);
-                    showToast("Falha ao salvar. Verifique sua conexão e as regras do banco.");
-                })
-                .finally(() => {
-                    btnSave.disabled = false;
-                    btnSave.innerText = originalText;
-                });
-        };
-
-        // --- UTILITÁRIOS ---
-        function updateStats() {
-            document.getElementById('stat-total').innerText = dashboards.length;
-            document.getElementById('stat-favs').innerText = dashboards.filter(d => myFavs.includes(d.firebaseId)).length;
-            document.getElementById('stat-views').innerText = dashboards.reduce((acc, d) => acc + (d.views || 0), 0);
-            document.getElementById('stat-sectors').innerText = [...new Set(dashboards.map(d => d.sector).filter(Boolean))].length;
-        }
-
-        function startClock() {
-            const update = () => {
-                const now = new Date();
-                document.getElementById('time').innerText = now.toLocaleTimeString('pt-br');
-                document.getElementById('date').innerText = now.toLocaleDateString('pt-br');
-            };
-            setInterval(update, 1000);
-            update();
-        }
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 3000);
-        }
-
-        function setupTheme() {
-            const btn = document.getElementById('themeToggle');
-            btn.onclick = () => {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'light' ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', next);
-                btn.innerHTML = next === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-            };
-        }
-
-        document.getElementById('btnNew').onclick = () => {
-            editModeId = null;
-            document.getElementById('dashForm').reset();
-            document.getElementById('modalTitle').innerText = "Cadastrar Dashboard";
-            document.getElementById('btnSave').innerText = "Salvar no Portal";
-            document.getElementById('modal').classList.add('active');
-        };
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-            // Reset modal state
-            setTimeout(() => {
-                editModeId = null;
-                document.getElementById('dashForm').reset();
-                document.getElementById('modalTitle').innerText = "Cadastrar Dashboard";
-                document.getElementById('btnSave').innerText = "Salvar no Portal";
-            }, 300);
-        }
-
-        document.getElementById('searchInput').oninput = (e) => { state.search = e.target.value; renderCards(); };
-
-        // Filtros Navegação Fixa
-        document.querySelectorAll('.nav-group:first-of-type .nav-item').forEach(item => {
-            item.onclick = () => {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                state.filter = item.dataset.filter;
-                renderCards();
-            };
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDashboards(DASHBOARD_DATA);
         });
-
-        init();
     </script>
 </body>
 </html>
