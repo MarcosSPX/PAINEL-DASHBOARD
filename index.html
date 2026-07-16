@@ -350,6 +350,7 @@
         let state = { filter: 'all', search: '' };
         let recentIds = JSON.parse(localStorage.getItem('shopee_recent')) || [];
         let myFavs = JSON.parse(localStorage.getItem('shopee_favs')) || [];
+        let editModeId = null; // Variável para controlar ID em edição
 
         // Escapa texto para inserção segura no HTML dos cards
         const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({
@@ -411,7 +412,7 @@
 
             filtered.forEach(dash => {
                 const isFav = myFavs.includes(dash.firebaseId);
-                const canDelete = dash.authorId === currentUid || checkAdmin();
+                const canModify = dash.authorId === currentUid || checkAdmin();
                 const safeUrl = encodeURIComponent(dash.url || '');
 
                 const card = document.createElement('div');
@@ -432,7 +433,10 @@
                         <button class="btn btn-primary" onclick="openDash('${dash.firebaseId}', '${safeUrl}')" style="flex: 1; justify-content: center;">
                             Acessar Dashboard
                         </button>
-                        ${canDelete ? `<button class="btn btn-icon" onclick="deleteDash('${dash.firebaseId}')"><i class="fas fa-trash"></i></button>` : ''}
+                        ${canModify ? `
+                            <button class="btn btn-icon" onclick="openEditModal('${dash.firebaseId}')" title="Editar"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-icon" onclick="deleteDash('${dash.firebaseId}')" title="Excluir"><i class="fas fa-trash"></i></button>
+                        ` : ''}
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px;">
                         <span><i class="fas fa-user"></i> ${esc(dash.owner) || 'N/A'}</span>
@@ -472,8 +476,6 @@
             }
 
             // Incremento de Acessos (Global no Firebase)
-            // Transaction evita perda de contagem quando dois usuários
-            // acessam ao mesmo tempo.
             if (firebaseConnected && db) {
                 db.child(id).child('views').transaction(v => (v || 0) + 1)
                     .catch(err => console.error("Erro ao atualizar views:", err));
@@ -511,6 +513,28 @@
             }
         }
 
+        // --- EDIÇÃO ---
+        function openEditModal(id) {
+            const dash = dashboards.find(d => d.firebaseId === id);
+            if (!dash) return;
+
+            editModeId = id;
+
+            // Preenche campos
+            document.getElementById('name').value = dash.name || '';
+            document.getElementById('sector').value = dash.sector || 'Operação';
+            document.getElementById('desc').value = dash.desc || '';
+            document.getElementById('type').value = dash.type || 'Power BI';
+            document.getElementById('owner').value = dash.owner || '';
+            document.getElementById('url').value = dash.url || '';
+
+            // Altera Modal para modo Edição
+            document.getElementById('modalTitle').innerText = "Editar Dashboard";
+            document.getElementById('btnSave').innerText = "Salvar Alterações";
+
+            document.getElementById('modal').classList.add('active');
+        }
+
         // --- SUBMISSÃO ---
         document.getElementById('dashForm').onsubmit = (e) => {
             e.preventDefault();
@@ -528,27 +552,28 @@
             btnSave.disabled = true;
             btnSave.innerText = "Salvando...";
 
-            // Garante que o link abra corretamente em nova aba
             let url = document.getElementById('url').value.trim();
             if (url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
 
-            const newDash = {
+            const dashData = {
                 name: document.getElementById('name').value.trim(),
                 sector: document.getElementById('sector').value,
                 desc: document.getElementById('desc').value.trim(),
                 type: document.getElementById('type').value,
                 owner: document.getElementById('owner').value.trim(),
                 url: url,
-                views: 0,
-                authorId: currentUid,
-                createdAt: firebase.database.ServerValue.TIMESTAMP
+                updatedAt: firebase.database.ServerValue.TIMESTAMP
             };
 
-            db.push(newDash)
+            const promise = editModeId
+                ? db.child(editModeId).update(dashData) // Atualiza registro existente
+                : db.push({ ...dashData, views: 0, authorId: currentUid, createdAt: firebase.database.ServerValue.TIMESTAMP }); // Cria novo
+
+            promise
                 .then(() => {
                     closeModal();
                     document.getElementById('dashForm').reset();
-                    showToast("Dashboard adicionado à biblioteca global!");
+                    showToast(editModeId ? "Alterações salvas com sucesso!" : "Dashboard adicionado à biblioteca global!");
                 })
                 .catch(err => {
                     console.error("Erro ao salvar:", err);
@@ -595,8 +620,25 @@
             };
         }
 
-        document.getElementById('btnNew').onclick = () => document.getElementById('modal').classList.add('active');
-        function closeModal() { document.getElementById('modal').classList.remove('active'); }
+        document.getElementById('btnNew').onclick = () => {
+            editModeId = null;
+            document.getElementById('dashForm').reset();
+            document.getElementById('modalTitle').innerText = "Cadastrar Dashboard";
+            document.getElementById('btnSave').innerText = "Salvar no Portal";
+            document.getElementById('modal').classList.add('active');
+        };
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            // Reset modal state
+            setTimeout(() => {
+                editModeId = null;
+                document.getElementById('dashForm').reset();
+                document.getElementById('modalTitle').innerText = "Cadastrar Dashboard";
+                document.getElementById('btnSave').innerText = "Salvar no Portal";
+            }, 300);
+        }
+
         document.getElementById('searchInput').oninput = (e) => { state.search = e.target.value; renderCards(); };
 
         // Filtros Navegação Fixa
