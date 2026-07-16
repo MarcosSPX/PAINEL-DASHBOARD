@@ -155,14 +155,15 @@
         .dot { width: 8px; height: 8px; border-radius: 50%; }
 
         /* Dropdown de Opções */
-        .opt-btn { background: none; border: none; color: white; cursor: pointer; padding: 5px; font-size: 1.2rem; }
+        .opt-btn { background: none; border: none; color: white; cursor: pointer; padding: 5px; font-size: 1.2rem; transition: transform 0.2s; }
+        .opt-btn:hover { transform: scale(1.1); }
         .opt-menu { 
-            position: absolute; top: 10px; right: 10px; 
+            position: absolute; top: 45px; right: 10px; 
             background: var(--bg-card); border: 1px solid var(--border); 
             border-radius: 6px; display: none; flex-direction: column; 
-            box-shadow: var(--shadow); z-index: 5;
+            box-shadow: var(--shadow); z-index: 20; min-width: 120px;
         }
-        .opt-menu button { background: none; border: none; color: white; padding: 10px 15px; text-align: left; cursor: pointer; font-size: 0.8rem; }
+        .opt-menu button { background: none; border: none; color: white; padding: 12px 15px; text-align: left; cursor: pointer; font-size: 0.85rem; }
         .opt-menu button:hover { background: var(--border); color: var(--primary); }
 
         /* Modal */
@@ -298,7 +299,8 @@
     <div id="toast"></div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbe7hbRkScUPMS30BqnWwUCABe59Pk44XLgRUnd4Px9y-tShk_dfdLZZ1WgZyqvLQqlQ/exec";
+        // URL da sua implantação do Google Script (Web App)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw89qpfVzrJk7QvZ2dqGFqUmG2tcXPeHuoch5cTW71NOZQS6hRhIyjkIixScPO-q3m8_Q/exec";
         let rawData = [];
 
         window.onload = loadData;
@@ -316,6 +318,7 @@
                 filterData();
             } catch (e) {
                 showToast("Erro ao conectar ao banco de dados", "#f44336");
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding:50px;">Erro ao carregar dados. Verifique a URL do Script.</p>';
             }
         }
 
@@ -325,14 +328,20 @@
             const sort = document.getElementById('sortOrder').value;
 
             let filtered = rawData.filter(d => {
-                return (d.Nome.toLowerCase().includes(search) || d.Descricao.toLowerCase().includes(search)) &&
-                       (area === "" || d.Area === area);
+                // Verificação de segurança para campos que podem ser nulos na planilha
+                const nomeMatch = (d.Nome || "").toLowerCase().includes(search);
+                const descMatch = (d.Descricao || "").toLowerCase().includes(search);
+                const areaMatch = area === "" || d.Area === area;
+
+                return (nomeMatch || descMatch) && areaMatch;
             });
 
+            // Ordenação
             if (sort === 'name') {
-                filtered.sort((a, b) => a.Nome.localeCompare(b.Nome));
+                filtered.sort((a, b) => (a.Nome || "").localeCompare(b.Nome || ""));
             } else {
-                filtered.sort((a, b) => new Date(b.UltimaAtualizacao) - new Date(a.UltimaAtualizacao));
+                // Ordenação por data ISO (exige que o backend salve como .toISOString())
+                filtered.sort((a, b) => new Date(b.UltimaAtualizacao || 0) - new Date(a.UltimaAtualizacao || 0));
             }
 
             render(filtered);
@@ -346,6 +355,9 @@
                 const dotColor = dash.Status === 'Ativo' ? '#10B981' : (dash.Status === 'Manutenção' ? '#F59E0B' : '#64748B');
                 const img = dash.Imagem || 'https://images.unsplash.com/photo-1551288049-bbbda546697a?q=80&w=500';
                 
+                // Formata a data ISO para exibição amigável PT-BR
+                const dataExibicao = dash.UltimaAtualizacao ? new Date(dash.UltimaAtualizacao).toLocaleDateString('pt-BR') : '---';
+
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -354,16 +366,16 @@
                             <button onclick="editDash('${dash.ID}')">Editar</button>
                             <button onclick="deleteDash('${dash.ID}')">Excluir</button>
                         </div>
-                        <button class="opt-btn" style="position:absolute; top:10px; right:10px; background: rgba(0,0,0,0.5); border-radius:50%; width:30px; height:30px;" onclick="toggleOpt(event, '${dash.ID}')">⋮</button>
+                        <button class="opt-btn" style="position:absolute; top:10px; right:10px; background: rgba(0,0,0,0.5); border-radius:50%; width:30px; height:30px; color:white; border:none; z-index:10; cursor:pointer;" onclick="toggleOpt(event, '${dash.ID}')">⋮</button>
                         <img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1551288049-bbbda546697a?q=80&w=500'">
                     </div>
                     <div class="card-body">
-                        <span class="card-tag">${dash.Area}</span>
+                        <span class="card-tag">${dash.Area || 'Geral'}</span>
                         <h3 class="card-title">${dash.Nome}</h3>
                         <p class="card-desc">${dash.Descricao || 'Sem descrição disponível.'}</p>
                         <div class="card-meta">
-                            <div class="meta-item">Responsável <b>${dash.Responsavel}</b></div>
-                            <div class="meta-item">Atualização <b>${dash.UltimaAtualizacao.split(',')[0]}</b></div>
+                            <div class="meta-item">Responsável <b>${dash.Responsavel || '---'}</b></div>
+                            <div class="meta-item">Atualização <b>${dataExibicao}</b></div>
                         </div>
                     </div>
                     <div class="card-actions">
@@ -378,7 +390,7 @@
             });
         }
 
-        // CRUD
+        // CRUD Actions
         document.getElementById('dashForm').onsubmit = async (e) => {
             e.preventDefault();
             const id = document.getElementById('dashId').value;
@@ -397,14 +409,19 @@
             closeModal();
 
             try {
-                await fetch(SCRIPT_URL, {
+                const res = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: id ? 'edit' : 'add', payload })
                 });
-                showToast("Sucesso!", "#10B981");
-                loadData();
+                const result = await res.json();
+                if(result.success) {
+                    showToast("Salvo com sucesso!", "#10B981");
+                    loadData();
+                } else {
+                    throw new Error();
+                }
             } catch (err) {
-                showToast("Erro ao salvar", "#f44336");
+                showToast("Erro ao salvar no banco", "#f44336");
             }
         };
 
@@ -412,8 +429,15 @@
             if (!confirm("Excluir este dashboard permanentemente?")) return;
             showToast("Excluindo...", "#334155");
             try {
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', payload: { id } }) });
-                loadData();
+                const res = await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ action: 'delete', payload: { id } }) 
+                });
+                const result = await res.json();
+                if(result.success) {
+                    showToast("Excluído!", "#10B981");
+                    loadData();
+                }
             } catch (e) { showToast("Erro ao excluir", "red"); }
         }
 
@@ -421,22 +445,28 @@
         function toggleOpt(e, id) {
             e.stopPropagation();
             const menu = document.getElementById(`opt-${id}`);
-            const visible = menu.style.display === 'flex';
+            const isVisible = menu.style.display === 'flex';
+            
+            // Fecha todos os outros menus abertos
             document.querySelectorAll('.opt-menu').forEach(m => m.style.display = 'none');
-            menu.style.display = visible ? 'none' : 'flex';
+            
+            menu.style.display = isVisible ? 'none' : 'flex';
         }
 
         function editDash(id) {
             const d = rawData.find(i => i.ID === id);
+            if(!d) return;
+
             document.getElementById('modalTitle').innerText = "Editar Dashboard";
             document.getElementById('dashId').value = d.ID;
             document.getElementById('dashNome').value = d.Nome;
-            document.getElementById('dashDesc').value = d.Descricao;
+            document.getElementById('dashDesc').value = d.Descricao || "";
             document.getElementById('dashArea').value = d.Area;
             document.getElementById('dashStatus').value = d.Status;
             document.getElementById('dashResp').value = d.Responsavel;
             document.getElementById('dashLink').value = d.Link;
-            document.getElementById('dashImg').value = d.Imagem;
+            document.getElementById('dashImg').value = d.Imagem || "";
+            
             document.getElementById('modalBg').style.display = 'flex';
         }
 
@@ -457,6 +487,7 @@
             setTimeout(() => t.style.display = 'none', 3000);
         }
 
+        // Fecha menus ao clicar fora
         window.onclick = () => document.querySelectorAll('.opt-menu').forEach(m => m.style.display = 'none');
     </script>
 </body>
