@@ -207,14 +207,14 @@
     <header>
         <div class="logo-area">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--primary)"><path d="M13 9V3h8v6h-8zM3 13V3h8v10H3zm10 8V11h8v10h-8zM3 21v-6h8v6H3z"/></svg>
-            Dashboard <span>Hub</span>
+            Shopee <span>Hub</span>
         </div>
         
         <div class="search-bar">
             <input type="text" id="searchInput" class="input-control" placeholder="Buscar por nome ou descrição..." oninput="filterData()">
             <select id="sortOrder" class="input-control" onchange="filterData()" style="width: 140px;">
                 <option value="recent">Mais Recentes</option>
-                <option value="name">Nome (A-Z)</option>
+                <option value="name">Nome do projeto</option>
             </select>
         </div>
 
@@ -222,7 +222,7 @@
             <select id="filterArea" class="input-control" onchange="filterData()">
                 <option value="">Todas as Áreas</option>
                 <option value="Gestao">Gestão</option>
-                <option value="Operações">Operações</option>
+                <option value="Operação">Operação</option>
             </select>
             <button class="btn btn-primary" onclick="openModal()">
                 <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
@@ -246,7 +246,7 @@
                     <input type="hidden" id="dashId">
                     <div class="form-group">
                         <label>Nome do Dashboard</label>
-                        <input type="text" id="dashNome" required placeholder="Ex: Vendas Mensais">
+                        <input type="text" id="dashNome" required placeholder="Ex: Insira o nome do projeto...">
                     </div>
                     <div class="form-group">
                         <label>Descrição</label>
@@ -256,7 +256,7 @@
                         <div class="form-group">
                             <label>Área</label>
                             <select id="dashArea">
-                                <option value="Operações">Operações</option>
+                                <option value="Operação">Operação</option>
                                 <option value="Gestao">Gestão</option>
                             </select>
                         </div>
@@ -265,24 +265,18 @@
                             <select id="dashStatus">
                                 <option value="Ativo">Ativo</option>
                                 <option value="Manutenção">Manutenção</option>
-                                <option value="Arquivado">Arquivado</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Responsável</label>
-                        <input type="text" id="dashResp" required placeholder="Nome do autor">
+                        <input type="text" id="dashResp" required placeholder="Nome do responsável">
                     </div>
                     <div class="form-group">
                         <label>URL do Dashboard</label>
-                        <input type="url" id="dashLink" required placeholder="https://link-do-looker-ou-pbi.com">
+                        <input type="url" id="dashLink" required placeholder="https://shopee.com/dashboard">
                     </div>
                     <div class="form-group">
-                        <label>URL da Imagem de Capa (Opcional)</label>
-                        <input type="url" id="dashImg" placeholder="https://imagem.com/preview.png">
-                    </div>
-                </div>
-                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Salvar Dashboard</button>
                 </div>
