@@ -3,394 +3,461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Hub | Inteligência Corporativa</title>
+    <title>Dashboard Hub | Central Pro</title>
     <style>
-        /* VARIÁVEIS E TEMAS */
         :root {
             --bg-body: #0F172A;
             --bg-card: #1E293B;
-            --bg-input: #334155;
-            --text-main: #F8FAFC;
+            --primary: #EE4D2D;
+            --primary-hover: #D83A1C;
+            --text-main: #F1F5F9;
             --text-muted: #94A3B8;
-            --accent: #EE4D2D;
-            --accent-hover: #D73D1C;
-            --status-online: #22C55E;
-            --status-maintenence: #EAB308;
-            --status-offline: #EF4444;
             --border: #334155;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --success: #10B981;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
         }
 
-        /* GERAL */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow-x: hidden;
         }
 
-        /* CABEÇALHO */
+        /* Header Modernizado */
         header {
-            background-color: var(--bg-card);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
+            padding: 0.8rem 2rem;
             position: sticky;
             top: 0;
             z-index: 100;
             display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
             align-items: center;
             justify-content: space-between;
+            gap: 15px;
         }
 
-        .logo-section { display: flex; align-items: center; gap: 0.75rem; }
-        .logo-section svg { fill: var(--accent); width: 32px; height: 32px; }
-        .logo-section h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px; }
-
-        /* CONTROLES */
-        .controls { display: flex; flex-wrap: wrap; gap: 1rem; flex-grow: 1; justify-content: flex-end; }
-        
-        .search-container { position: relative; max-width: 350px; width: 100%; }
-        .search-container input {
-            width: 100%; background: var(--bg-input); border: 1px solid var(--border);
-            border-radius: 8px; padding: 0.6rem 1rem 0.6rem 2.5rem; color: white; outline: none;
+        .logo-area { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-weight: 800; 
+            font-size: 1.3rem; 
+            color: var(--text-main);
+            letter-spacing: -0.5px;
         }
-        .search-container svg {
-            position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);
-            width: 18px; height: 18px; fill: var(--text-muted);
-        }
+        .logo-area span { color: var(--primary); }
 
-        select {
-            background: var(--bg-input); color: white; border: 1px solid var(--border);
-            border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer; outline: none;
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+            display: flex;
+            gap: 10px;
         }
 
-        .btn-primary {
-            background: var(--accent); color: white; border: none; padding: 0.6rem 1.2rem;
-            border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center;
-            gap: 0.5rem; transition: var(--transition);
+        .input-control {
+            background: #0F172A;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .input-control:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(238, 77, 45, 0.2); }
 
-        /* GRID */
-        main { padding: 2rem; max-width: 1400px; margin: 0 auto; width: 100%; flex-grow: 1; }
+        .filters { display: flex; gap: 8px; align-items: center; }
+
+        /* Botões */
+        .btn {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-secondary { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); }
+        .btn-secondary:hover { background: var(--border); }
+
+        /* Grid */
+        .container { max-width: 1600px; margin: 30px auto; padding: 0 30px; }
         
         .dashboard-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem; animation: fadeIn 0.5s ease;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* CARDS */
+        /* Card Visual Grafana */
         .card {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
-            overflow: hidden; display: flex; flex-direction: column; transition: var(--transition);
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            animation: fadeIn 0.6s ease-out;
         }
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
 
-        .card-img {
-            height: 150px; background: #0F172A; background-size: cover; background-position: center;
-            display: flex; align-items: center; justify-content: center;
+        .card-header-img {
+            width: 100%;
+            height: 170px;
+            background: #252f3f;
+            position: relative;
         }
-        .card-img svg { width: 48px; height: 48px; fill: var(--bg-input); }
+        .card-header-img img { width: 100%; height: 100%; object-fit: cover; }
 
-        .card-body { padding: 1.25rem; flex-grow: 1; }
-        .area-label { font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; }
-        .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .card-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem; }
+        .card-body { padding: 1.5rem; flex: 1; }
+        .card-tag { 
+            font-size: 0.65rem; 
+            text-transform: uppercase; 
+            background: rgba(238, 77, 45, 0.15); 
+            color: var(--primary); 
+            padding: 4px 10px; 
+            border-radius: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        .card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .card-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px; height: 3rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        
+        .card-meta { border-top: 1px solid var(--border); padding-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.75rem; color: var(--text-muted); }
+        .meta-item b { color: var(--text-main); display: block; margin-top: 2px; }
 
-        .card-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .status-pill { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 600; }
+        .card-actions {
+            padding: 1rem 1.5rem;
+            background: rgba(15, 23, 42, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .status-pill { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; }
         .dot { width: 8px; height: 8px; border-radius: 50%; }
 
-        .actions { padding: 0 1.25rem 1.25rem; display: flex; gap: 0.5rem; }
-        .btn-open {
-            flex-grow: 1; text-decoration: none; background: transparent; border: 1px solid var(--accent);
-            color: var(--accent); text-align: center; padding: 0.5rem; border-radius: 6px;
-            font-size: 0.85rem; font-weight: 600; transition: var(--transition);
+        /* Dropdown de Opções */
+        .opt-btn { background: none; border: none; color: white; cursor: pointer; padding: 5px; font-size: 1.2rem; }
+        .opt-menu { 
+            position: absolute; top: 10px; right: 10px; 
+            background: var(--bg-card); border: 1px solid var(--border); 
+            border-radius: 6px; display: none; flex-direction: column; 
+            box-shadow: var(--shadow); z-index: 5;
         }
-        .btn-open:hover { background: var(--accent); color: white; }
+        .opt-menu button { background: none; border: none; color: white; padding: 10px 15px; text-align: left; cursor: pointer; font-size: 0.8rem; }
+        .opt-menu button:hover { background: var(--border); color: var(--primary); }
+
+        /* Modal */
+        .modal-bg {
+            position: fixed; top:0; left:0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; align-items: center;
+            justify-content: center; z-index: 1000;
+        }
+        .modal {
+            background: var(--bg-card); width: 95%; max-width: 550px;
+            border-radius: 16px; border: 1px solid var(--border); overflow: hidden;
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
-        .btn-icon {
-            background: var(--bg-input); border: 1px solid var(--border); color: white;
-            padding: 0.5rem; border-radius: 6px; cursor: pointer;
-        }
-        .btn-icon:hover { border-color: var(--text-muted); }
-
-        /* MODAL */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none;
-            align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal { background: var(--bg-card); width: 100%; max-width: 500px; border-radius: 12px; padding: 2rem; border: 1px solid var(--border); }
-        .modal h2 { margin-bottom: 1.5rem; }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--border); font-size: 1.2rem; font-weight: bold; }
+        .modal-content { padding: 25px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; border: 1px solid var(--border); background: #0F172A; color: white; padding: 10px; border-radius: 6px; outline: none; }
         
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; background: var(--bg-input); border: 1px solid var(--border);
-            padding: 0.7rem; border-radius: 6px; color: white; outline: none;
-        }
+        .modal-footer { padding: 15px 25px; background: rgba(0,0,0,0.2); text-align: right; display: flex; justify-content: flex-end; gap: 10px; }
 
-        .modal-buttons { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
-        .btn-cancel { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-weight: 600; }
+        /* Toasts */
+        #toast { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; z-index: 9999; display: none; font-weight: 600; color: white; box-shadow: var(--shadow); }
 
-        /* LOADING */
-        .loader { display: none; text-align: center; padding: 2rem; }
-        .loader.active { display: block; }
+        /* Skeleton Loading */
+        .skeleton { background: #1e293b; height: 350px; border-radius: 12px; position: relative; overflow: hidden; }
+        .skeleton::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); animation: loading 1.5s infinite; }
+        @keyframes loading { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
 
-        @media (max-width: 768px) {
-            header { flex-direction: column; align-items: stretch; }
-            .controls { flex-direction: column; }
-            .search-container { max-width: none; }
+        @media (max-width: 900px) {
+            header { flex-direction: column; padding: 15px; }
+            .search-bar { width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-section">
-            <svg viewBox="0 0 24 24"><path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,3.19L19,6.3V11C19,15.09 16.14,18.93 12,20.09C7.86,18.93 5,15.09 5,11V6.3L12,3.19M12,7C10.89,7 10,7.89 10,9C10,10.11 10.89,11 12,11C13.11,11 14,10.11 14,9C14,7.89 13.11,7 12,7M12,13C9.33,13 4,14.33 4,17V19H20V17C20,14.33 14.67,13 12,13Z"/></svg>
-            <h1>Dashboard Hub</h1>
+        <div class="logo-area">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--primary)"><path d="M13 9V3h8v6h-8zM3 13V3h8v10H3zm10 8V11h8v10h-8zM3 21v-6h8v6H3z"/></svg>
+            Dashboard <span>Hub</span>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" id="searchInput" class="input-control" placeholder="Buscar por nome ou descrição..." oninput="filterData()">
+            <select id="sortOrder" class="input-control" onchange="filterData()" style="width: 140px;">
+                <option value="recent">Mais Recentes</option>
+                <option value="name">Nome (A-Z)</option>
+            </select>
         </div>
 
-        <div class="controls">
-            <div class="search-container">
-                <svg viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
-                <input type="text" id="searchInput" placeholder="Pesquisar...">
-            </div>
-            <select id="filterArea">
+        <div class="filters">
+            <select id="filterArea" class="input-control" onchange="filterData()">
                 <option value="">Todas as Áreas</option>
                 <option value="Comercial">Comercial</option>
                 <option value="Financeiro">Financeiro</option>
+                <option value="TI">TI</option>
                 <option value="Marketing">Marketing</option>
                 <option value="Operações">Operações</option>
-                <option value="TI">TI</option>
             </select>
-            <button class="btn-primary" onclick="openModal()">
-                <svg style="width:20px;height:20px;fill:white" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>
-                Novo Dashboard
+            <button class="btn btn-primary" onclick="openModal()">
+                <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                Novo
             </button>
         </div>
     </header>
 
-    <div id="mainLoader" class="loader active">Carregando dashboards...</div>
+    <div class="container">
+        <div id="dashboardGrid" class="dashboard-grid">
+            <!-- Cards gerados via JS -->
+        </div>
+    </div>
 
-    <main>
-        <div class="dashboard-grid" id="grid"></div>
-    </main>
-
-    <!-- MODAL -->
-    <div class="modal-overlay" id="modal">
+    <!-- Modal -->
+    <div id="modalBg" class="modal-bg">
         <div class="modal">
-            <h2 id="modalTitle">Novo Dashboard</h2>
+            <div class="modal-header" id="modalTitle">Cadastrar Dashboard</div>
             <form id="dashForm">
-                <input type="hidden" id="editId">
-                <div class="form-group">
-                    <label>Nome do Dashboard</label>
-                    <input type="text" id="name" required>
-                </div>
-                <div class="form-group">
-                    <label>Descrição</label>
-                    <textarea id="description" rows="2" required></textarea>
-                </div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem">
+                <div class="modal-content">
+                    <input type="hidden" id="dashId">
                     <div class="form-group">
-                        <label>Área</label>
-                        <select id="area" required>
-                            <option value="Comercial">Comercial</option>
-                            <option value="Financeiro">Financeiro</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Operações">Operações</option>
-                            <option value="TI">TI</option>
-                        </select>
+                        <label>Nome do Dashboard</label>
+                        <input type="text" id="dashNome" required placeholder="Ex: Vendas Mensais">
                     </div>
                     <div class="form-group">
-                        <label>Status</label>
-                        <select id="status" required>
-                            <option value="online">Online</option>
-                            <option value="manutencao">Manutenção</option>
-                            <option value="offline">Offline</option>
-                        </select>
+                        <label>Descrição</label>
+                        <textarea id="dashDesc" rows="2" placeholder="Breve resumo do que o dashboard exibe"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Área</label>
+                            <select id="dashArea">
+                                <option value="Comercial">Comercial</option>
+                                <option value="Financeiro">Financeiro</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Operações">Operações</option>
+                                <option value="TI">TI</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="dashStatus">
+                                <option value="Ativo">Ativo</option>
+                                <option value="Manutenção">Manutenção</option>
+                                <option value="Arquivado">Arquivado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <input type="text" id="dashResp" required placeholder="Nome do autor">
+                    </div>
+                    <div class="form-group">
+                        <label>URL do Dashboard</label>
+                        <input type="url" id="dashLink" required placeholder="https://link-do-looker-ou-pbi.com">
+                    </div>
+                    <div class="form-group">
+                        <label>URL da Imagem de Capa (Opcional)</label>
+                        <input type="url" id="dashImg" placeholder="https://imagem.com/preview.png">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>URL do Dashboard</label>
-                    <input type="url" id="url" required>
-                </div>
-                <div class="form-group">
-                    <label>URL da Imagem (Opcional)</label>
-                    <input type="url" id="image">
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
-                    <button type="submit" class="btn-primary" id="btnSave">Salvar</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Dashboard</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <div id="toast"></div>
+
     <script>
-        /**
-         * CONFIGURAÇÃO BACKEND
-         * Substitua pela URL gerada após implantar o Google Apps Script
-         */
-        const API_URL = "https://script.google.com/macros/s/AKfycbwyng6vHMu5eBcdTYhrTilHp9DcCIDDFmLR29-BiNkfLHD-5TzL-lC6mmwRqw4jUQK8ag/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbe7hbRkScUPMS30BqnWwUCABe59Pk44XLgRUnd4Px9y-tShk_dfdLZZ1WgZyqvLQqlQ/exec";
+        let rawData = [];
 
-        let allDashboards = [];
+        window.onload = loadData;
 
-        // BUSCAR DADOS
-        async function fetchDashboards() {
-            toggleLoader(true);
-            try {
-                const response = await fetch(API_URL);
-                allDashboards = await response.json();
-                render();
-            } catch (error) {
-                console.error("Erro ao carregar:", error);
-                alert("Erro ao conectar com a planilha. Verifique a URL da API.");
-            }
-            toggleLoader(false);
-        }
-
-        // SALVAR / ATUALIZAR
-        async function handleSubmit(e) {
-            e.preventDefault();
-            const btnSave = document.getElementById('btnSave');
-            btnSave.disabled = true;
-            btnSave.innerText = "Salvando...";
-
-            const id = document.getElementById('editId').value;
-            const data = {
-                action: id ? "update" : "create",
-                id: id || Date.now().toString(),
-                name: document.getElementById('name').value,
-                description: document.getElementById('description').value,
-                area: document.getElementById('area').value,
-                status: document.getElementById('status').value,
-                url: document.getElementById('url').value,
-                image: document.getElementById('image').value,
-                updatedAt: new Date().toLocaleDateString('pt-BR')
-            };
-
-            try {
-                await fetch(API_URL, {
-                    method: "POST",
-                    body: JSON.stringify(data)
-                });
-                closeModal();
-                fetchDashboards();
-            } catch (error) {
-                alert("Erro ao salvar.");
-            } finally {
-                btnSave.disabled = false;
-                btnSave.innerText = "Salvar";
-            }
-        }
-
-        // REMOVER
-        async function removeDashboard(id) {
-            if (!confirm("Deseja realmente remover este dashboard?")) return;
+        async function loadData() {
+            const grid = document.getElementById('dashboardGrid');
+            grid.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
             
-            toggleLoader(true);
             try {
-                await fetch(API_URL, {
-                    method: "POST",
-                    body: JSON.stringify({ action: "delete", id: id })
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'list' })
                 });
-                fetchDashboards();
-            } catch (error) {
-                alert("Erro ao remover.");
-                toggleLoader(false);
+                rawData = await response.json();
+                filterData();
+            } catch (e) {
+                showToast("Erro ao conectar ao banco de dados", "#f44336");
             }
         }
 
-        // RENDERIZAR GRID
-        function render() {
-            const grid = document.getElementById('grid');
+        function filterData() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const area = document.getElementById('filterArea').value;
+            const sort = document.getElementById('sortOrder').value;
 
-            const filtered = allDashboards.filter(d => {
-                const matchesSearch = d.name.toLowerCase().includes(search) || d.description.toLowerCase().includes(search);
-                const matchesArea = !area || d.area === area;
-                return matchesSearch && matchesArea;
+            let filtered = rawData.filter(d => {
+                return (d.Nome.toLowerCase().includes(search) || d.Descricao.toLowerCase().includes(search)) &&
+                       (area === "" || d.Area === area);
             });
 
-            grid.innerHTML = filtered.map(d => `
-                <div class="card">
-                    <div class="card-img" style="${d.image ? `background-image: url('${d.image}')` : ''}">
-                        ${!d.image ? `<svg viewBox="0 0 24 24"><path d="M19,3H5C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3M19,19H5V5H19V19M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z"/></svg>` : ''}
+            if (sort === 'name') {
+                filtered.sort((a, b) => a.Nome.localeCompare(b.Nome));
+            } else {
+                filtered.sort((a, b) => new Date(b.UltimaAtualizacao) - new Date(a.UltimaAtualizacao));
+            }
+
+            render(filtered);
+        }
+
+        function render(items) {
+            const grid = document.getElementById('dashboardGrid');
+            grid.innerHTML = items.length ? '' : '<p style="text-align:center; grid-column: 1/-1; padding: 40px; color: var(--text-muted);">Nenhum dashboard encontrado.</p>';
+            
+            items.forEach(dash => {
+                const dotColor = dash.Status === 'Ativo' ? '#10B981' : (dash.Status === 'Manutenção' ? '#F59E0B' : '#64748B');
+                const img = dash.Imagem || 'https://images.unsplash.com/photo-1551288049-bbbda546697a?q=80&w=500';
+                
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header-img">
+                        <div class="opt-menu" id="opt-${dash.ID}">
+                            <button onclick="editDash('${dash.ID}')">Editar</button>
+                            <button onclick="deleteDash('${dash.ID}')">Excluir</button>
+                        </div>
+                        <button class="opt-btn" style="position:absolute; top:10px; right:10px; background: rgba(0,0,0,0.5); border-radius:50%; width:30px; height:30px;" onclick="toggleOpt(event, '${dash.ID}')">⋮</button>
+                        <img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1551288049-bbbda546697a?q=80&w=500'">
                     </div>
                     <div class="card-body">
-                        <div class="area-label">${d.area}</div>
-                        <div class="card-title">${d.name}</div>
-                        <div class="card-desc">${d.description}</div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="status-pill">
-                            <div class="dot" style="background: var(--status-${d.status})"></div>
-                            ${d.status.toUpperCase()}
+                        <span class="card-tag">${dash.Area}</span>
+                        <h3 class="card-title">${dash.Nome}</h3>
+                        <p class="card-desc">${dash.Descricao || 'Sem descrição disponível.'}</p>
+                        <div class="card-meta">
+                            <div class="meta-item">Responsável <b>${dash.Responsavel}</b></div>
+                            <div class="meta-item">Atualização <b>${dash.UltimaAtualizacao.split(',')[0]}</b></div>
                         </div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted)">Atu. em ${d.updatedAt}</div>
                     </div>
-                    <div class="actions">
-                        <a href="${d.url}" target="_blank" class="btn-open">Abrir Dashboard</a>
-                        <button class="btn-icon" onclick="editDashboard('${d.id}')">
-                            <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6.01 20.71,5.63L18.37,3.29C17.99,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/></svg>
-                        </button>
-                        <button class="btn-icon" onclick="removeDashboard('${d.id}')">
-                            <svg style="width:18px;height:18px;fill:#EF4444" viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19V4M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/></svg>
-                        </button>
+                    <div class="card-actions">
+                        <div class="status-pill">
+                            <span class="dot" style="background: ${dotColor}"></span>
+                            ${dash.Status}
+                        </div>
+                        <button class="btn btn-secondary" onclick="window.open('${dash.Link}', '_blank')">Abrir Dashboard</button>
                     </div>
-                </div>
-            `).join('');
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        // MODAL E AUXILIARES
+        // CRUD
+        document.getElementById('dashForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('dashId').value;
+            const payload = {
+                ID: id,
+                Nome: document.getElementById('dashNome').value,
+                Descricao: document.getElementById('dashDesc').value,
+                Area: document.getElementById('dashArea').value,
+                Status: document.getElementById('dashStatus').value,
+                Responsavel: document.getElementById('dashResp').value,
+                Link: document.getElementById('dashLink').value,
+                Imagem: document.getElementById('dashImg').value
+            };
+
+            showToast("Salvando informações...", "#EE4D2D");
+            closeModal();
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: id ? 'edit' : 'add', payload })
+                });
+                showToast("Sucesso!", "#10B981");
+                loadData();
+            } catch (err) {
+                showToast("Erro ao salvar", "#f44336");
+            }
+        };
+
+        async function deleteDash(id) {
+            if (!confirm("Excluir este dashboard permanentemente?")) return;
+            showToast("Excluindo...", "#334155");
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', payload: { id } }) });
+                loadData();
+            } catch (e) { showToast("Erro ao excluir", "red"); }
+        }
+
+        // Interface Helpers
+        function toggleOpt(e, id) {
+            e.stopPropagation();
+            const menu = document.getElementById(`opt-${id}`);
+            const visible = menu.style.display === 'flex';
+            document.querySelectorAll('.opt-menu').forEach(m => m.style.display = 'none');
+            menu.style.display = visible ? 'none' : 'flex';
+        }
+
+        function editDash(id) {
+            const d = rawData.find(i => i.ID === id);
+            document.getElementById('modalTitle').innerText = "Editar Dashboard";
+            document.getElementById('dashId').value = d.ID;
+            document.getElementById('dashNome').value = d.Nome;
+            document.getElementById('dashDesc').value = d.Descricao;
+            document.getElementById('dashArea').value = d.Area;
+            document.getElementById('dashStatus').value = d.Status;
+            document.getElementById('dashResp').value = d.Responsavel;
+            document.getElementById('dashLink').value = d.Link;
+            document.getElementById('dashImg').value = d.Imagem;
+            document.getElementById('modalBg').style.display = 'flex';
+        }
+
         function openModal() {
             document.getElementById('dashForm').reset();
-            document.getElementById('editId').value = "";
-            document.getElementById('modalTitle').innerText = "Novo Dashboard";
-            document.getElementById('modal').classList.add('active');
+            document.getElementById('dashId').value = "";
+            document.getElementById('modalTitle').innerText = "Cadastrar Dashboard";
+            document.getElementById('modalBg').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
+        function closeModal() { document.getElementById('modalBg').style.display = 'none'; }
+
+        function showToast(text, color) {
+            const t = document.getElementById('toast');
+            t.innerText = text;
+            t.style.background = color;
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
         }
 
-        function editDashboard(id) {
-            const d = allDashboards.find(item => item.id === id);
-            if (!d) return;
-            document.getElementById('editId').value = d.id;
-            document.getElementById('name').value = d.name;
-            document.getElementById('description').value = d.description;
-            document.getElementById('area').value = d.area;
-            document.getElementById('status').value = d.status;
-            document.getElementById('url').value = d.url;
-            document.getElementById('image').value = d.image || "";
-            document.getElementById('modalTitle').innerText = "Editar Dashboard";
-            document.getElementById('modal').classList.add('active');
-        }
-
-        function toggleLoader(show) {
-            document.getElementById('mainLoader').classList.toggle('active', show);
-        }
-
-        // LISTENERS
-        document.getElementById('dashForm').addEventListener('submit', handleSubmit);
-        document.getElementById('searchInput').addEventListener('input', render);
-        document.getElementById('filterArea').addEventListener('change', render);
-
-        // INIT
-        fetchDashboards();
+        window.onclick = () => document.querySelectorAll('.opt-menu').forEach(m => m.style.display = 'none');
     </script>
 </body>
 </html>
