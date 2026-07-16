@@ -101,7 +101,7 @@
             gap: 25px;
         }
 
-        /* Card Visual Grafana */
+        /* Card Visual */
         .card {
             background: var(--bg-card);
             border-radius: 12px;
@@ -156,7 +156,6 @@
 
         /* Dropdown de Opções */
         .opt-btn { background: none; border: none; color: white; cursor: pointer; padding: 5px; font-size: 1.2rem; transition: transform 0.2s; }
-        .opt-btn:hover { transform: scale(1.1); }
         .opt-menu { 
             position: absolute; top: 45px; right: 10px; 
             background: var(--bg-card); border: 1px solid var(--border); 
@@ -194,8 +193,7 @@
         /* Skeleton Loading */
         .skeleton { background: #1e293b; height: 350px; border-radius: 12px; position: relative; overflow: hidden; }
         .skeleton::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); animation: loading 1.5s infinite; }
-        @keyframes loading { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-
+        
         @media (max-width: 900px) {
             header { flex-direction: column; padding: 15px; }
             .search-bar { width: 100%; }
@@ -232,9 +230,7 @@
     </header>
 
     <div class="container">
-        <div id="dashboardGrid" class="dashboard-grid">
-            <!-- Cards gerados via JS -->
-        </div>
+        <div id="dashboardGrid" class="dashboard-grid"></div>
     </div>
 
     <!-- Modal -->
@@ -277,6 +273,11 @@
                         <input type="url" id="dashLink" required placeholder="https://shopee.com/dashboard">
                     </div>
                     <div class="form-group">
+                        <label>URL da Imagem de Capa (Opcional)</label>
+                        <input type="url" id="dashImg" placeholder="https://shopee.com/imagem.png">
+                    </div>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Salvar Dashboard</button>
                 </div>
@@ -287,7 +288,6 @@
     <div id="toast"></div>
 
     <script>
-        // URL da sua implantação do Google Script (Web App)
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw89qpfVzrJk7QvZ2dqGFqUmG2tcXPeHuoch5cTW71NOZQS6hRhIyjkIixScPO-q3m8_Q/exec";
         let rawData = [];
 
@@ -306,7 +306,7 @@
                 filterData();
             } catch (e) {
                 showToast("Erro ao conectar ao banco de dados", "#f44336");
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding:50px;">Erro ao carregar dados. Verifique a URL do Script.</p>';
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding:50px;">Erro ao carregar dados.</p>';
             }
         }
 
@@ -316,19 +316,15 @@
             const sort = document.getElementById('sortOrder').value;
 
             let filtered = rawData.filter(d => {
-                // Verificação de segurança para campos que podem ser nulos na planilha
                 const nomeMatch = (d.Nome || "").toLowerCase().includes(search);
                 const descMatch = (d.Descricao || "").toLowerCase().includes(search);
                 const areaMatch = area === "" || d.Area === area;
-
                 return (nomeMatch || descMatch) && areaMatch;
             });
 
-            // Ordenação
             if (sort === 'name') {
                 filtered.sort((a, b) => (a.Nome || "").localeCompare(b.Nome || ""));
             } else {
-                // Ordenação por data ISO (exige que o backend salve como .toISOString())
                 filtered.sort((a, b) => new Date(b.UltimaAtualizacao || 0) - new Date(a.UltimaAtualizacao || 0));
             }
 
@@ -340,10 +336,8 @@
             grid.innerHTML = items.length ? '' : '<p style="text-align:center; grid-column: 1/-1; padding: 40px; color: var(--text-muted);">Nenhum dashboard encontrado.</p>';
             
             items.forEach(dash => {
-                const dotColor = dash.Status === 'Ativo' ? '#10B981' : (dash.Status === 'Manutenção' ? '#F59E0B' : '#64748B');
+                const dotColor = dash.Status === 'Ativo' ? '#10B981' : '#F59E0B';
                 const img = dash.Imagem || 'https://images.unsplash.com/photo-1551288049-bbbda546697a?q=80&w=500';
-                
-                // Formata a data ISO para exibição amigável PT-BR
                 const dataExibicao = dash.UltimaAtualizacao ? new Date(dash.UltimaAtualizacao).toLocaleDateString('pt-BR') : '---';
 
                 const card = document.createElement('div');
@@ -378,7 +372,6 @@
             });
         }
 
-        // CRUD Actions
         document.getElementById('dashForm').onsubmit = async (e) => {
             e.preventDefault();
             const id = document.getElementById('dashId').value;
@@ -393,7 +386,7 @@
                 Imagem: document.getElementById('dashImg').value
             };
 
-            showToast("Salvando informações...", "#EE4D2D");
+            showToast("Salvando...", "#EE4D2D");
             closeModal();
 
             try {
@@ -405,46 +398,33 @@
                 if(result.success) {
                     showToast("Salvo com sucesso!", "#10B981");
                     loadData();
-                } else {
-                    throw new Error();
                 }
             } catch (err) {
-                showToast("Erro ao salvar no banco", "#f44336");
+                showToast("Erro ao salvar", "#f44336");
             }
         };
 
         async function deleteDash(id) {
-            if (!confirm("Excluir este dashboard permanentemente?")) return;
+            if (!confirm("Excluir permanentemente?")) return;
             showToast("Excluindo...", "#334155");
             try {
-                const res = await fetch(SCRIPT_URL, { 
-                    method: 'POST', 
-                    body: JSON.stringify({ action: 'delete', payload: { id } }) 
-                });
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', payload: { id } }) });
                 const result = await res.json();
-                if(result.success) {
-                    showToast("Excluído!", "#10B981");
-                    loadData();
-                }
+                if(result.success) loadData();
             } catch (e) { showToast("Erro ao excluir", "red"); }
         }
 
-        // Interface Helpers
         function toggleOpt(e, id) {
             e.stopPropagation();
             const menu = document.getElementById(`opt-${id}`);
             const isVisible = menu.style.display === 'flex';
-            
-            // Fecha todos os outros menus abertos
             document.querySelectorAll('.opt-menu').forEach(m => m.style.display = 'none');
-            
             menu.style.display = isVisible ? 'none' : 'flex';
         }
 
         function editDash(id) {
             const d = rawData.find(i => i.ID === id);
             if(!d) return;
-
             document.getElementById('modalTitle').innerText = "Editar Dashboard";
             document.getElementById('dashId').value = d.ID;
             document.getElementById('dashNome').value = d.Nome;
@@ -454,7 +434,6 @@
             document.getElementById('dashResp').value = d.Responsavel;
             document.getElementById('dashLink').value = d.Link;
             document.getElementById('dashImg').value = d.Imagem || "";
-            
             document.getElementById('modalBg').style.display = 'flex';
         }
 
@@ -475,7 +454,6 @@
             setTimeout(() => t.style.display = 'none', 3000);
         }
 
-        // Fecha menus ao clicar fora
         window.onclick = () => document.querySelectorAll('.opt-menu').forEach(m => m.style.display = 'none');
     </script>
 </body>
