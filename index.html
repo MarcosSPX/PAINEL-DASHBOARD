@@ -1,640 +1,553 @@
 <!DOCTYPE html>
 <html lang="pt-br" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPX Hub | Shopee Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPX Hub | Shopee Portal</title>
+    
+    <!-- Fontes e Ícones -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Identidade Shopee */
+            --shopee-orange: #EE4D2D;
+            --shopee-orange-hover: #d73211;
+            --shopee-bg: #f5f5f5;
+            
+            /* Tema Claro */
+            --bg-body: var(--shopee-bg);
+            --bg-sidebar: #ffffff;
+            --bg-card: #ffffff;
+            --text-main: #222222;
+            --text-muted: #757575;
+            --primary: var(--shopee-orange);
+            --primary-light: #fff5f1;
+            --border: #e8e8e8;
+            --shadow: 0 2px 10px rgba(0,0,0,0.05);
+            --radius: 8px;
+            --sidebar-width: 260px;
+            --transition: all 0.25s ease;
+        }
 
-<!-- Fontes e Ícones -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        [data-theme="dark"] {
+            --bg-body: #121212;
+            --bg-sidebar: #1e1e1e;
+            --bg-card: #252525;
+            --text-main: #f5f5f5;
+            --text-muted: #aaaaaa;
+            --border: #333333;
+            --shadow: 0 4px 20px rgba(0,0,0,0.4);
+            --primary-light: rgba(238, 77, 45, 0.1);
+        }
 
-<style>
-:root {
-/* Identidade Shopee */
---shopee-orange: #EE4D2D;
---shopee-orange-hover: #d73211;
---shopee-bg: #f5f5f5;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; transition: var(--transition); }
 
-/* Tema Claro */
---bg-body: var(--shopee-bg);
---bg-sidebar: #ffffff;
---bg-card: #ffffff;
---text-main: #222222;
---text-muted: #757575;
---primary: var(--shopee-orange);
---primary-light: #fff5f1;
---border: #e8e8e8;
---shadow: 0 2px 10px rgba(0,0,0,0.05);
---radius: 8px;
---sidebar-width: 260px;
---transition: all 0.25s ease;
-}
+        /* Sidebar */
+        aside {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: var(--transition);
+        }
 
-[data-theme="dark"] {
---bg-body: #121212;
---bg-sidebar: #1e1e1e;
---bg-card: #252525;
---text-main: #f5f5f5;
---text-muted: #aaaaaa;
---border: #333333;
---shadow: 0 4px 20px rgba(0,0,0,0.4);
---primary-light: rgba(238, 77, 45, 0.1);
-}
+        .sidebar-header { 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            border-bottom: 1px solid var(--border);
+            gap: 10px;
+        }
+        
+        /* Logo Container */
+        .logo-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo-icon {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(238, 77, 45, 0.3);
+        }
+        .logo-text { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; transition: var(--transition); }
+        .nav-group { padding: 15px; }
+        .nav-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; padding-left: 10px; }
+        .nav-item { 
+            display: flex; align-items: center; padding: 10px 15px; text-decoration: none; color: var(--text-main);
+            border-radius: 4px; gap: 12px; transition: var(--transition); margin-bottom: 2px; cursor: pointer;
+            font-size: 0.9rem; font-weight: 500;
+        }
+        .nav-item:hover { color: var(--primary); background: var(--primary-light); }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.2); }
 
-/* Sidebar */
-aside {
-width: var(--sidebar-width);
-background: var(--bg-sidebar);
-border-right: 1px solid var(--border);
-display: flex;
-flex-direction: column;
-position: fixed;
-height: 100vh;
-z-index: 100;
-transition: var(--transition);
-}
+        /* Main Content */
+        main { flex: 1; margin-left: var(--sidebar-width); padding: 25px; transition: var(--transition); }
 
-.sidebar-header {
-padding: 20px;
-display: flex;
-flex-direction: column;
-align-items: center;
-border-bottom: 1px solid var(--border);
-gap: 10px;
-}
+        /* Header Area */
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 20px; }
+        .search-box { 
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px;
+            padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 600px;
+        }
+        .search-box input { border: none; background: transparent; color: var(--text-main); outline: none; width: 100%; font-size: 0.9rem; }
+        
+        .header-tools { display: flex; align-items: center; gap: 20px; }
+        .clock-box { text-align: right; border-right: 2px solid var(--border); padding-right: 20px; }
+        .clock-box #time { font-weight: 700; font-size: 1.1rem; color: var(--primary); display: block; }
+        .clock-box #date { font-size: 0.75rem; color: var(--text-muted); }
 
-/* Logo Container */
-.logo-container {
-width: 100%;
-display: flex;
-align-items: center;
-gap: 10px;
-color: var(--primary);
-text-decoration: none;
-}
-.logo-icon {
-background: var(--primary);
-color: white;
-width: 40px;
-height: 40px;
-border-radius: 10px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 1.5rem;
-box-shadow: 0 4px 8px rgba(238, 77, 45, 0.3);
-}
-.logo-text { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
+        /* Stats Section */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { 
+            background: var(--bg-card); padding: 20px; border-radius: 4px; border-bottom: 3px solid var(--border);
+            display: flex; flex-direction: column; box-shadow: var(--shadow); transition: var(--transition);
+        }
+        .stat-card:hover { border-bottom-color: var(--primary); transform: translateY(-2px); }
+        .stat-card span { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 5px; }
+        .stat-card h3 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); }
 
-.nav-group { padding: 15px; }
-.nav-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; padding-left: 10px; }
-.nav-item {
-display: flex; align-items: center; padding: 10px 15px; text-decoration: none; color: var(--text-main);
-border-radius: 4px; gap: 12px; transition: var(--transition); margin-bottom: 2px; cursor: pointer;
-font-size: 0.9rem; font-weight: 500;
-}
-.nav-item:hover { color: var(--primary); background: var(--primary-light); }
-.nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.2); }
+        /* Dashboard Grid */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .dash-card { 
+            background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);
+            padding: 20px; position: relative; transition: var(--transition);
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .dash-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary); }
+        
+        .card-top { display: flex; justify-content: space-between; align-items: center; }
+        .card-icon { 
+            width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center; 
+            justify-content: center; font-size: 1.5rem; background: var(--primary-light); color: var(--primary);
+        }
+        
+        .card-info h4 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 5px; }
+        .card-info p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; height: 40px; overflow: hidden; }
 
-/* Main Content */
-main { flex: 1; margin-left: var(--sidebar-width); padding: 25px; transition: var(--transition); }
+        /* Buttons */
+        .btn { 
+            padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; 
+            font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--shopee-orange-hover); }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary-light); }
+        .btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); width: 36px; height: 36px; justify-content: center; }
+        .btn-fav.active { color: var(--primary); }
 
-/* Header Area */
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 20px; }
-.search-box {
-background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px;
-padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 600px;
-}
-.search-box input { border: none; background: transparent; color: var(--text-main); outline: none; width: 100%; font-size: 0.9rem; }
+        /* Modal */
+        .modal { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
+        }
+        .modal.active { display: flex; }
+        .modal-content { 
+            background: var(--bg-card); width: 95%; max-width: 600px; padding: 30px; 
+            border-radius: 4px; box-shadow: var(--shadow); position: relative;
+        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+        input, textarea, select { 
+            padding: 10px; border-radius: 4px; border: 1px solid var(--border); 
+            background: var(--bg-body); color: var(--text-main); outline: none;
+        }
+        input:focus { border-color: var(--primary); }
 
-.header-tools { display: flex; align-items: center; gap: 20px; }
-.clock-box { text-align: right; border-right: 2px solid var(--border); padding-right: 20px; }
-.clock-box #time { font-weight: 700; font-size: 1.1rem; color: var(--primary); display: block; }
-.clock-box #date { font-size: 0.75rem; color: var(--text-muted); }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 30px; border-radius: 4px; display: none; z-index: 2000; box-shadow: var(--shadow); }
 
-/* Stats Section */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-.stat-card {
-background: var(--bg-card); padding: 20px; border-radius: 4px; border-bottom: 3px solid var(--border);
-display: flex; flex-direction: column; box-shadow: var(--shadow); transition: var(--transition);
-}
-.stat-card:hover { border-bottom-color: var(--primary); transform: translateY(-2px); }
-.stat-card span { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 5px; }
-.stat-card h3 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); }
-
-/* Dashboard Grid */
-.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-.dash-card {
-background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border);
-padding: 20px; position: relative; transition: var(--transition);
-display: flex; flex-direction: column; gap: 15px;
-}
-.dash-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary); }
-
-.card-top { display: flex; justify-content: space-between; align-items: center; }
-.card-icon {
-width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center;
-justify-content: center; font-size: 1.5rem; background: var(--primary-light); color: var(--primary);
-}
-
-.card-info h4 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 5px; }
-.card-info p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; height: 40px; overflow: hidden; }
-
-/* Buttons */
-.btn {
-padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer;
-font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
-}
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--shopee-orange-hover); }
-.btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-.btn-outline:hover { background: var(--primary-light); }
-.btn-icon { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); width: 36px; height: 36px; justify-content: center; }
-.btn-fav.active { color: var(--primary); }
-.btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-/* Modal */
-.modal {
-position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
-display: none; align-items: center; justify-content: center; z-index: 1000;
-}
-.modal.active { display: flex; }
-.modal-content {
-background: var(--bg-card); width: 95%; max-width: 600px; padding: 30px;
-border-radius: 4px; box-shadow: var(--shadow); position: relative;
-}
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-.input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
-input, textarea, select {
-padding: 10px; border-radius: 4px; border: 1px solid var(--border);
-background: var(--bg-body); color: var(--text-main); outline: none;
-}
-input:focus { border-color: var(--primary); }
-
-.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 30px; border-radius: 4px; display: none; z-index: 2000; box-shadow: var(--shadow); }
-
-/* Responsividade */
-@media (max-width: 1024px) {
-aside { width: 70px; }
-aside .logo-text, aside .nav-item span, aside .nav-title { display: none; }
-main { margin-left: 70px; }
-.sidebar-header { padding: 15px 5px; }
-}
-</style>
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            aside { width: 70px; }
+            aside .logo-text, aside .nav-item span, aside .nav-title { display: none; }
+            main { margin-left: 70px; }
+            .sidebar-header { padding: 15px 5px; }
+        }
+    </style>
 </head>
 <body>
 
-<aside id="sidebar">
-<div class="sidebar-header">
-<a href="#" class="logo-container">
-<div class="logo-icon"><i class="fas fa-shopping-bag"></i></div>
-<div class="logo-text">Shopee<span style="color:var(--text-main)">Hub</span></div>
-</a>
-</div>
+    <aside id="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="logo-container">
+                <div class="logo-icon"><i class="fas fa-shopping-bag"></i></div>
+                <div class="logo-text">Shopee<span style="color:var(--text-main)">Hub</span></div>
+            </a>
+        </div>
+        
+        <nav class="nav-group">
+            <p class="nav-title">Navegação</p>
+            <div class="nav-item active" data-filter="all"><i class="fas fa-home"></i> <span>Início</span></div>
+            <div class="nav-item" data-filter="favoritos"><i class="fas fa-heart"></i> <span>Favoritos</span></div>
+            <div class="nav-item" data-filter="recentes"><i class="fas fa-clock"></i> <span>Recentes</span></div>
+        </nav>
 
-<nav class="nav-group">
-<p class="nav-title">Navegação</p>
-<div class="nav-item active" data-filter="all"><i class="fas fa-home"></i> <span>Início</span></div>
-<div class="nav-item" data-filter="favoritos"><i class="fas fa-heart"></i> <span>Favoritos</span></div>
-<div class="nav-item" data-filter="recentes"><i class="fas fa-clock"></i> <span>Recentes</span></div>
-</nav>
+        <nav class="nav-group">
+            <p class="nav-title">Departamentos</p>
+            <div id="sector-list">
+                <!-- Preenchido via JS -->
+            </div>
+        </nav>
+    </aside>
 
-<nav class="nav-group">
-<p class="nav-title">Departamentos</p>
-<div id="sector-list">
-<!-- Preenchido via JS -->
-</div>
-</nav>
-</aside>
+    <main>
+        <header>
+            <div class="search-box">
+                <i class="fas fa-search" style="color: var(--text-muted)"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar por nome, responsável ou setor...">
+            </div>
+            <div class="header-tools">
+                <div class="clock-box">
+                    <span id="time">00:00:00</span>
+                    <span id="date">--/--/----</span>
+                </div>
+                <button class="btn btn-icon" id="themeToggle" title="Alternar Tema"><i class="fas fa-moon"></i></button>
+                <button class="btn btn-primary" id="btnNew"><i class="fas fa-plus"></i> Novo Dashboard</button>
+            </div>
+        </header>
 
-<main>
-<header>
-<div class="search-box">
-<i class="fas fa-search" style="color: var(--text-muted)"></i>
-<input type="text" id="searchInput" placeholder="Pesquisar por nome, responsável ou setor...">
-</div>
-<div class="header-tools">
-<div class="clock-box">
-<span id="time">00:00:00</span>
-<span id="date">--/--/----</span>
-</div>
-<button class="btn btn-icon" id="themeToggle" title="Alternar Tema"><i class="fas fa-moon"></i></button>
-<button class="btn btn-primary" id="btnNew"><i class="fas fa-plus"></i> Novo Dashboard</button>
-</div>
-</header>
+        <section class="stats-grid">
+            <div class="stat-card"><span>Total de Ativos</span><h3 id="stat-total">0</h3></div>
+            <div class="stat-card"><span>Meus Favoritos</span><h3 id="stat-favs">0</h3></div>
+            <div class="stat-card"><span>Acessos Totais</span><h3 id="stat-views">0</h3></div>
+            <div class="stat-card"><span>Categorias</span><h3 id="stat-sectors">0</h3></div>
+        </section>
 
-<section class="stats-grid">
-<div class="stat-card"><span>Total de Ativos</span><h3 id="stat-total">0</h3></div>
-<div class="stat-card"><span>Meus Favoritos</span><h3 id="stat-favs">0</h3></div>
-<div class="stat-card"><span>Acessos Totais</span><h3 id="stat-views">0</h3></div>
-<div class="stat-card"><span>Categorias</span><h3 id="stat-sectors">0</h3></div>
-</section>
+        <div class="dashboard-grid" id="grid">
+            <!-- Cards gerados dinamicamente -->
+        </div>
+    </main>
 
-<div class="dashboard-grid" id="grid">
-<!-- Cards gerados dinamicamente -->
-</div>
-</main>
+    <!-- Modal Form -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" style="margin-bottom: 20px; color: var(--primary)">Cadastrar Dashboard</h2>
+            <form id="dashForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nome do Dashboard</label>
+                        <input type="text" id="name" required placeholder="Ex: Insira o nome do projeto...">
+                    </div>
+                    <div class="input-group">
+                        <label>Setor</label>
+                        <select id="sector" required>
+                            <option value="Operação">Operação</option>
+                            <option value="Gestão">Gestão</option>
+                            <option value="Comercial">Comercial</option>
+                            <option value="Logística">Logística</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Descrição Curta</label>
+                    <textarea id="desc" rows="2" placeholder="Descreva brevemente o uso deste link..."></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Tipo de Ferramenta</label>
+                        <select id="type">
+                            <option value="Power BI">Power BI</option>
+                            <option value="Sheets">Google Sheets</option>
+                            <option value="HTML">Sistema HTML</option>
+                            <option value="Forms">Google Forms</option>
+                            <option value="Data Studio">Data Studio</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Responsável</label>
+                        <input type="text" id="owner" placeholder="Nome do responsável">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>URL / Link de Acesso</label>
+                    <input type="text" id="url" required placeholder="https://shopee.com/dashboard">
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Salvar no Portal</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-<!-- Modal Form -->
-<div class="modal" id="modal">
-<div class="modal-content">
-<h2 id="modalTitle" style="margin-bottom: 20px; color: var(--primary)">Cadastrar Dashboard</h2>
-<form id="dashForm">
-<div class="form-grid">
-<div class="input-group">
-<label>Nome do Dashboard</label>
-<input type="text" id="name" required placeholder="Ex: Insira o nome do projeto...">
-</div>
-<div class="input-group">
-<label>Setor</label>
-<select id="sector" required>
-<option value="Operação">Operação</option>
-<option value="Gestão">Gestão</option>
-</select>
-</div>
-</div>
-<div class="input-group">
-<label>Descrição Curta</label>
-<textarea id="desc" rows="2" placeholder="Descreva brevemente o uso deste link..."></textarea>
-</div>
-<div class="form-grid">
-<div class="input-group">
-<label>Tipo de Ferramenta</label>
-<select id="type">
-<option value="Power BI">Power BI</option>
-<option value="Sheets">Google Sheets</option>
-<option value="HTML">Sistema HTML</option>
-<option value="Forms">Google Forms</option>
-<option value="Data Studio">Data Studio</option>
-</select>
-</div>
-<div class="input-group">
-<label>Responsável</label>
-<input type="text" id="owner" placeholder="Nome do responsável">
-</div>
-</div>
-<div class="input-group">
-<label>URL / Link de Acesso</label>
-<input type="text" id="url" required placeholder="https://shopee.com/dashboard">
-</div>
-<div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
-<button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
-<button type="submit" class="btn btn-primary" id="btnSave">Salvar no Portal</button>
-</div>
-</form>
-</div>
-</div>
+    <div class="toast" id="toast">Sucesso!</div>
 
-<div class="toast" id="toast">Sucesso!</div>
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
-<!-- ======================================================= -->
-<!-- FIREBASE SDK (compat) -->
-<!-- ======================================================= -->
-<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+    <script>
+        // --- CONFIGURAÇÃO FIREBASE ---
+        // Substitua as credenciais abaixo pelas do seu console.firebase.google.com
+        const firebaseConfig = {
+            apiKey: "COLE_SUA_API_KEY_AQUI",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+            projectId: "SEU_PROJETO",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "000000000000",
+            appId: "1:000000000000:web:abcdef123456"
+        };
 
-<script>
-/* =========================================================
-   CONFIGURAÇÃO DO FIREBASE
-   -----------------------------------------------------------
-   Cole aqui as credenciais do SEU projeto Firebase.
-   Console Firebase > Configurações do Projeto > Seus apps > SDK config.
-   É necessário ativar:
-     - Realtime Database (modo de teste ou com regras adequadas)
-     - Authentication > Sign-in method > "Anônimo" (Anonymous)
-   ========================================================= */
-const firebaseConfig = {
-  apiKey: "COLE_AQUI_SUA_API_KEY",
-  authDomain: "COLE_AQUI_SEU_AUTH_DOMAIN",
-  databaseURL: "COLE_AQUI_SUA_DATABASE_URL",
-  projectId: "COLE_AQUI_SEU_PROJECT_ID",
-  storageBucket: "COLE_AQUI_SEU_STORAGE_BUCKET",
-  messagingSenderId: "COLE_AQUI_SEU_MESSAGING_SENDER_ID",
-  appId: "COLE_AQUI_SEU_APP_ID"
-};
+        // Inicializa Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database().ref('global_dashboards');
 
-/* =========================================================
-   ADMINISTRADORES
-   -----------------------------------------------------------
-   Cole aqui o(s) UID(s) de Authentication do(s) usuário(s) que
-   deverão poder excluir QUALQUER dashboard (não apenas os
-   próprios). O UID de cada usuário aparece no console do
-   Firebase > Authentication, ou pode ser obtido no console do
-   navegador (F12) deste portal, pois ele é exibido ao carregar
-   a página em modo anônimo.
-   Exemplo: const ADMIN_UIDS = ["AbCdEfGhIjKlMnOpQrStUvWxYz"];
-   ========================================================= */
-const ADMIN_UIDS = [
-  // "COLE_AQUI_O_UID_DO_ADMINISTRADOR"
-];
+        // --- IDENTIDADE E ESTADO ---
+        // UID único para controle de autoria
+        if(!localStorage.getItem('shopee_uid')) {
+            localStorage.setItem('shopee_uid', 'u' + Date.now() + Math.random().toString(36).substr(2, 5));
+        }
+        const currentUid = localStorage.getItem('shopee_uid');
+        
+        // Simulação Admin (Pode ser alterado para true via console para testes)
+        const checkAdmin = () => localStorage.getItem('shopee_admin') === 'true';
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-const dashboardsRef = db.ref('dashboards');
+        let dashboards = []; // Array local sincronizado com Firebase
+        let state = { filter: 'all', search: '' };
+        let recentIds = JSON.parse(localStorage.getItem('shopee_recent')) || [];
+        let myFavs = JSON.parse(localStorage.getItem('shopee_favs')) || [];
 
-// Estado
-let dashboards = [];       // vem do Firebase (biblioteca global)
-let currentUid = null;
-let isAdmin = false;
-let state = { filter: 'all', search: '' };
+        // --- INICIALIZAÇÃO ---
+        function init() {
+            // Escuta o Firebase em tempo real (Sincronização Global)
+            db.on('value', (snapshot) => {
+                const data = snapshot.val();
+                dashboards = data ? Object.keys(data).map(key => ({...data[key], firebaseId: key})) : [];
+                renderSectors();
+                renderCards();
+                updateStats();
+            }, (error) => {
+                console.error("Erro na sincronização Firebase:", error);
+            });
 
-// Favoritos e Recentes: individuais, permanecem em localStorage
-let favIds = JSON.parse(localStorage.getItem('shopee_hub_favs')) || [];
-let recentIds = JSON.parse(localStorage.getItem('shopee_recent')) || [];
+            startClock();
+            setupTheme();
+        }
 
-// -----------------------------------------------------------
-// AUTENTICAÇÃO ANÔNIMA (identifica o autor de cada cadastro)
-// -----------------------------------------------------------
-auth.onAuthStateChanged(user => {
-  if (user) {
-    currentUid = user.uid;
-    isAdmin = ADMIN_UIDS.includes(currentUid);
-    console.log("SPX Hub - UID deste usuário:", currentUid);
-  }
-});
+        // --- RENDERIZAÇÃO ---
+        function renderCards() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
 
-auth.signInAnonymously().catch(err => {
-  console.error("Erro na autenticação anônima:", err);
-  showToast("Erro ao conectar ao portal. Verifique as credenciais do Firebase.");
-});
+            const filtered = dashboards.filter(d => {
+                const matchesSearch = d.name.toLowerCase().includes(state.search.toLowerCase()) ||
+                                      d.sector.toLowerCase().includes(state.search.toLowerCase()) ||
+                                      d.owner.toLowerCase().includes(state.search.toLowerCase());
 
-// -----------------------------------------------------------
-// SINCRONIZAÇÃO EM TEMPO REAL DA BIBLIOTECA GLOBAL
-// -----------------------------------------------------------
-dashboardsRef.on('value', snapshot => {
-  const data = snapshot.val() || {};
-  dashboards = Object.keys(data).map(id => ({ id, ...data[id] }));
-  // ordena pelos mais recentes primeiro
-  dashboards.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-  renderSectors();
-  renderCards();
-  updateStats();
-}, err => {
-  console.error("Erro ao sincronizar com o Firebase:", err);
-  showToast("Erro ao carregar a biblioteca. Verifique as credenciais do Firebase.");
-});
+                let matchesNav = true;
+                const isFav = myFavs.includes(d.firebaseId);
 
-// -----------------------------------------------------------
-// RENDERIZAÇÃO DOS CARDS (layout original, inalterado)
-// -----------------------------------------------------------
-function renderCards() {
-  const grid = document.getElementById('grid');
-  grid.innerHTML = '';
+                if (state.filter === 'favoritos') matchesNav = isFav;
+                else if (state.filter === 'recentes') matchesNav = recentIds.includes(d.firebaseId);
+                else if (state.filter !== 'all') matchesNav = d.sector === state.filter;
 
-  const filtered = dashboards.filter(d => {
-    const term = state.search.toLowerCase();
-    const matchesSearch =
-      (d.name || '').toLowerCase().includes(term) ||
-      (d.sector || '').toLowerCase().includes(term) ||
-      (d.owner || '').toLowerCase().includes(term) ||
-      (d.type || '').toLowerCase().includes(term);
+                return matchesSearch && matchesNav;
+            });
 
-    let matchesNav = true;
-    if (state.filter === 'favoritos') matchesNav = favIds.includes(d.id);
-    else if (state.filter === 'recentes') matchesNav = recentIds.includes(d.id);
-    else if (state.filter !== 'all') matchesNav = d.sector === state.filter;
+            filtered.forEach(dash => {
+                const isFav = myFavs.includes(dash.firebaseId);
+                const canDelete = dash.authorId === currentUid || checkAdmin();
+                
+                const card = document.createElement('div');
+                card.className = 'dash-card';
+                card.innerHTML = `
+                    <div class="card-top">
+                        <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+                        <button class="btn-icon btn-fav ${isFav ? 'active' : ''}" onclick="toggleFav('${dash.firebaseId}')">
+                            <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-info">
+                        <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">${dash.sector}</span>
+                        <h4>${dash.name}</h4>
+                        <p>${dash.desc}</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" onclick="openDash('${dash.firebaseId}', '${dash.url}')" style="flex: 1; justify-content: center;">
+                            Acessar Dashboard
+                        </button>
+                        ${canDelete ? `<button class="btn btn-icon" onclick="deleteDash('${dash.firebaseId}')"><i class="fas fa-trash"></i></button>` : ''}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px;">
+                        <span><i class="fas fa-user"></i> ${dash.owner}</span>
+                        <span><i class="fas fa-eye"></i> ${dash.views || 0}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
-    return matchesSearch && matchesNav;
-  });
+        function renderSectors() {
+            const sectors = [...new Set(dashboards.map(d => d.sector))];
+            const container = document.getElementById('sector-list');
+            container.innerHTML = sectors.map(s => `
+                <div class="nav-item ${state.filter === s ? 'active' : ''}" data-filter="${s}"><i class="fas fa-folder"></i> <span>${s}</span></div>
+            `).join('');
 
-  if (filtered.length === 0) {
-    grid.innerHTML = '<p style="color:var(--text-muted); padding: 10px;">Nenhum dashboard encontrado.</p>';
-    return;
-  }
+            document.querySelectorAll('#sector-list .nav-item').forEach(item => {
+                item.onclick = () => {
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    state.filter = item.dataset.filter;
+                    renderCards();
+                };
+            });
+        }
 
-  filtered.forEach(dash => {
-    const fav = favIds.includes(dash.id);
-    const canDelete = isAdmin || (currentUid && dash.ownerUid === currentUid);
-    const card = document.createElement('div');
-    card.className = 'dash-card';
-    card.innerHTML = `
-      <div class="card-top">
-        <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
-        <button class="btn-icon btn-fav ${fav ? 'active' : ''}" onclick="toggleFav('${dash.id}')">
-          <i class="${fav ? 'fas' : 'far'} fa-heart"></i>
-        </button>
-      </div>
-      <div class="card-info">
-        <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">${dash.sector || ''}</span>
-        <h4>${dash.name || ''}</h4>
-        <p>${dash.desc || ''}</p>
-      </div>
-      <div style="display: flex; gap: 8px;">
-        <button class="btn btn-primary" onclick="openDash('${dash.id}', '${(dash.url || '#').replace(/'/g, "\\'")}')" style="flex: 1; justify-content: center;">
-          Acessar Dashboard
-        </button>
-        ${canDelete ? `<button class="btn btn-icon" onclick="deleteDash('${dash.id}')"><i class="fas fa-trash"></i></button>` : ''}
-      </div>
-      <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px;">
-        <span><i class="fas fa-user"></i> ${dash.owner || 'Não informado'}</span>
-        <span><i class="fas fa-eye"></i> ${dash.views || 0}</span>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
+        // --- AÇÕES ---
+        function openDash(id, url) {
+            // Histórico Recentes (Individual)
+            if (!recentIds.includes(id)) {
+                recentIds.unshift(id);
+                if (recentIds.length > 5) recentIds.pop();
+                localStorage.setItem('shopee_recent', JSON.stringify(recentIds));
+            }
+            
+            // Incremento de Acessos (Global no Firebase)
+            const dash = dashboards.find(d => d.firebaseId === id);
+            db.child(id).update({ views: (dash.views || 0) + 1 });
+            
+            showToast("Redirecionando para o portal...");
+            setTimeout(() => window.open(url, '_blank'), 400);
+        }
 
-function renderSectors() {
-  const sectors = [...new Set(dashboards.map(d => d.sector).filter(Boolean))];
-  const container = document.getElementById('sector-list');
-  container.innerHTML = sectors.map(s => `
-    <div class="nav-item ${state.filter === s ? 'active' : ''}" data-filter="${s}"><i class="fas fa-folder"></i> <span>${s}</span></div>
-  `).join('');
+        function toggleFav(id) {
+            const index = myFavs.indexOf(id);
+            if (index > -1) {
+                myFavs.splice(index, 1);
+            } else {
+                myFavs.push(id);
+            }
+            localStorage.setItem('shopee_favs', JSON.stringify(myFavs));
+            renderCards();
+            updateStats();
+        }
 
-  attachNavListeners();
-}
+        function deleteDash(id) {
+            if(confirm("Remover este acesso da biblioteca compartilhada?")) {
+                db.child(id).remove()
+                    .then(() => showToast("Dashboard removido!"))
+                    .catch(err => {
+                        console.error("Erro ao excluir:", err);
+                        alert("Erro ao excluir do servidor.");
+                    });
+            }
+        }
 
-function attachNavListeners() {
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.onclick = () => {
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      state.filter = item.dataset.filter;
-      renderCards();
-    };
-  });
-}
+        // --- SUBMISSÃO ---
+        document.getElementById('dashForm').onsubmit = (e) => {
+            e.preventDefault();
+            
+            const btnSave = document.getElementById('btnSave');
+            const originalText = btnSave.innerText;
+            
+            // Bloqueia botão durante gravação
+            btnSave.disabled = true;
+            btnSave.innerText = "Salvando...";
 
-// -----------------------------------------------------------
-// ABRIR DASHBOARD (incrementa acessos no Firebase para todos)
-// -----------------------------------------------------------
-function openDash(id, url) {
-  if (!recentIds.includes(id)) {
-    recentIds.unshift(id);
-    if (recentIds.length > 5) recentIds.pop();
-    localStorage.setItem('shopee_recent', JSON.stringify(recentIds));
-  }
+            const newDash = {
+                name: document.getElementById('name').value,
+                sector: document.getElementById('sector').value,
+                desc: document.getElementById('desc').value,
+                type: document.getElementById('type').value,
+                owner: document.getElementById('owner').value,
+                url: document.getElementById('url').value,
+                views: 0,
+                authorId: currentUid,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            };
 
-  dashboardsRef.child(id).child('views').transaction(current => (current || 0) + 1);
+            // Gravação Global no Firebase
+            db.push(newDash)
+                .then(() => {
+                    closeModal();
+                    document.getElementById('dashForm').reset();
+                    showToast("Dashboard adicionado à biblioteca global!");
+                })
+                .catch(err => {
+                    console.error("Erro ao salvar:", err);
+                    alert("Falha ao salvar no Firebase. Verifique o Console.");
+                })
+                .finally(() => {
+                    btnSave.disabled = false;
+                    btnSave.innerText = originalText;
+                });
+        };
 
-  showToast("Redirecionando para o portal...");
-  setTimeout(() => window.open(url, '_blank'), 400);
-}
+        // --- UTILITÁRIOS ---
+        function updateStats() {
+            document.getElementById('stat-total').innerText = dashboards.length;
+            document.getElementById('stat-favs').innerText = dashboards.filter(d => myFavs.includes(d.firebaseId)).length;
+            document.getElementById('stat-views').innerText = dashboards.reduce((acc, d) => acc + (d.views || 0), 0);
+            document.getElementById('stat-sectors').innerText = [...new Set(dashboards.map(d => d.sector))].length;
+        }
 
-// -----------------------------------------------------------
-// FAVORITOS (individuais - localStorage)
-// -----------------------------------------------------------
-function toggleFav(id) {
-  if (favIds.includes(id)) {
-    favIds = favIds.filter(f => f !== id);
-  } else {
-    favIds.push(id);
-  }
-  localStorage.setItem('shopee_hub_favs', JSON.stringify(favIds));
-  renderCards();
-  updateStats();
-}
+        function startClock() {
+            const update = () => {
+                const now = new Date();
+                document.getElementById('time').innerText = now.toLocaleTimeString('pt-br');
+                document.getElementById('date').innerText = now.toLocaleDateString('pt-br');
+            };
+            setInterval(update, 1000);
+            update();
+        }
 
-// -----------------------------------------------------------
-// EXCLUSÃO (apenas autor ou administrador)
-// -----------------------------------------------------------
-function deleteDash(id) {
-  const dash = dashboards.find(d => d.id === id);
-  if (!dash) return;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
 
-  const canDelete = isAdmin || (currentUid && dash.ownerUid === currentUid);
-  if (!canDelete) {
-    showToast("Apenas o autor ou um administrador pode excluir este dashboard.");
-    return;
-  }
+        function setupTheme() {
+            const btn = document.getElementById('themeToggle');
+            btn.onclick = () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                btn.innerHTML = next === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            };
+        }
 
-  if (confirm("Remover este acesso do portal para todos os usuários?")) {
-    dashboardsRef.child(id).remove()
-      .then(() => showToast("Dashboard removido do portal."))
-      .catch(err => {
-        console.error(err);
-        showToast("Erro ao remover. Tente novamente.");
-      });
-  }
-}
+        document.getElementById('btnNew').onclick = () => document.getElementById('modal').classList.add('active');
+        function closeModal() { document.getElementById('modal').classList.remove('active'); }
+        document.getElementById('searchInput').oninput = (e) => { state.search = e.target.value; renderCards(); };
 
-// -----------------------------------------------------------
-// CADASTRO (grava no Firebase, aguarda confirmação, fecha modal)
-// -----------------------------------------------------------
-document.getElementById('dashForm').onsubmit = async (e) => {
-  e.preventDefault();
+        // Filtros Navegação Fixa
+        document.querySelectorAll('.nav-group:first-of-type .nav-item').forEach(item => {
+            item.onclick = () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                state.filter = item.dataset.filter;
+                renderCards();
+            };
+        });
 
-  const name = document.getElementById('name').value.trim();
-  const url = document.getElementById('url').value.trim();
-  const sector = document.getElementById('sector').value;
-  const desc = document.getElementById('desc').value.trim();
-  const type = document.getElementById('type').value;
-  const owner = document.getElementById('owner').value.trim();
-
-  if (!name || !url) {
-    showToast("Preencha os campos obrigatórios.");
-    return;
-  }
-  if (!currentUid) {
-    showToast("Conectando ao portal, aguarde um instante e tente novamente.");
-    return;
-  }
-
-  const btnSave = document.getElementById('btnSave');
-  btnSave.disabled = true;
-  btnSave.innerText = "Salvando...";
-
-  const newDash = {
-    name, sector, desc, type,
-    owner: owner || 'Não informado',
-    url,
-    views: 0,
-    ownerUid: currentUid,
-    createdAt: Date.now()
-  };
-
-  try {
-    if (owner) localStorage.setItem('shopee_hub_username', owner);
-    await dashboardsRef.push(newDash);   // aguarda confirmação da gravação
-    closeModal();
-    showToast("Novo dashboard adicionado!");
-  } catch (err) {
-    console.error(err);
-    showToast("Erro ao salvar. Verifique sua conexão e tente novamente.");
-  } finally {
-    btnSave.disabled = false;
-    btnSave.innerText = "Salvar no Portal";
-  }
-};
-
-// -----------------------------------------------------------
-// ESTATÍSTICAS
-// -----------------------------------------------------------
-function updateStats() {
-  document.getElementById('stat-total').innerText = dashboards.length;
-  document.getElementById('stat-favs').innerText = dashboards.filter(d => favIds.includes(d.id)).length;
-  document.getElementById('stat-views').innerText = dashboards.reduce((acc, d) => acc + (d.views || 0), 0);
-  document.getElementById('stat-sectors').innerText = [...new Set(dashboards.map(d => d.sector).filter(Boolean))].length;
-}
-
-// -----------------------------------------------------------
-// RELÓGIO
-// -----------------------------------------------------------
-function startClock() {
-  const update = () => {
-    const now = new Date();
-    document.getElementById('time').innerText = now.toLocaleTimeString('pt-br');
-    document.getElementById('date').innerText = now.toLocaleDateString('pt-br');
-  };
-  setInterval(update, 1000);
-  update();
-}
-
-// -----------------------------------------------------------
-// TOAST
-// -----------------------------------------------------------
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.innerText = msg; t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 3000);
-}
-
-// -----------------------------------------------------------
-// TEMA
-// -----------------------------------------------------------
-function setupTheme() {
-  const btn = document.getElementById('themeToggle');
-  btn.onclick = () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next);
-    btn.innerHTML = next === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-  };
-}
-
-// -----------------------------------------------------------
-// MODAL
-// -----------------------------------------------------------
-document.getElementById('btnNew').onclick = () => {
-  document.getElementById('dashForm').reset();
-  const savedOwner = localStorage.getItem('shopee_hub_username');
-  if (savedOwner) document.getElementById('owner').value = savedOwner;
-  document.getElementById('modal').classList.add('active');
-};
-function closeModal() { document.getElementById('modal').classList.remove('active'); }
-
-// -----------------------------------------------------------
-// PESQUISA
-// -----------------------------------------------------------
-document.getElementById('searchInput').oninput = (e) => { state.search = e.target.value; renderCards(); };
-
-// -----------------------------------------------------------
-// INICIALIZAÇÃO
-// -----------------------------------------------------------
-function init() {
-  attachNavListeners();
-  startClock();
-  setupTheme();
-}
-
-init();
-</script>
+        init();
+    </script>
 </body>
 </html>
